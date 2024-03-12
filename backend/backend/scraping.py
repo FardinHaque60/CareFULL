@@ -63,7 +63,11 @@ class scraper:
             print("Processing soup " + url)
             try: 
                 title = soup.find('div', {"class": "inner-article-container"}).find("h1").text
-                body = " ".join([x for x in soup.find('div', {"class": "article__body"}).stripped_strings])
+                sections = [_ for _ in soup.find('div', {"class": "article__body"}).find_all("section")]
+                gens = [section.stripped_strings for section in sections]
+                body = []
+                for gen in gens:
+                    body.append(" ".join([_ for _ in gen]))
                 self.articles.append(article(title, body))
             except:
                 print("Skipped soup " + url)
