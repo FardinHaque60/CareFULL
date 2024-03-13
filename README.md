@@ -8,6 +8,7 @@ To run our application, run the following commands in a Linux terminal:
 * `cd CareFULL/` to enter the repository 
 * `python3 -m venv venv` to create a virtual environment.  
 * `source venv/bin/activate` to activate virtual environment.  
-* `pip3 install -r requirements.txt` to install all the dependencies needed to run the app.
-* `[insert command for building and launching]` to run the application
-* cntrl/cmd + click the link `[Link to local host opened]` that is displayed in the output to run the application in your broswer
+* `pip3 install -r requirements.txt` to install all the dependencies needed to run the backend.
+* `cd frontend && npm install` to install needed packages from frontend.
+* open a new terminal and locate to the CareFULL directory and run `cd backend && python manage.py runserver` to run the backend
+* `cd ../frontend && npm start` to run the frontend, this should open a new tab in your browser with the application. If not type [localhost:3000](localhost:3000) in your browser
