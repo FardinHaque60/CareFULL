@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -19,6 +20,12 @@ function LandingPage() {
     <div className="text-3xl font-bold">
       <h1> Welcome to CareFULL </h1>
       <p> {message} </p> {/* this message is taken from backend */}
+=======
+function LandingPage() {
+  return (
+    <div className="text-3xl font-bold underline">
+      Hello world!
+>>>>>>> 2270c9a55b5c6844476c317111dd335b00c1dfa6
     </div>
   );
 }
