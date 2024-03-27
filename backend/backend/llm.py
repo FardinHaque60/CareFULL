@@ -28,7 +28,7 @@ def load_data():
 
 def get_closest(query_embedding, embeddings):
     # cosine similarity
-    similarities = np.dot(embeddings, query_embedding) / (np.linalg.norm(embeddings, axis=1) * np.linalg.norm(query_embedding))
+    similarities = np.dot(embeddings, query_embedding)
     max_index = np.argmax(similarities)
     return max_index, similarities
 
