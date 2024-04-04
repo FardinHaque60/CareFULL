@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './css/Chatbot.css';
 
 function Chatbot() {
   const [data, setData] = useState([]);

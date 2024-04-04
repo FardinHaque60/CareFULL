@@ -22,7 +22,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage/>}/>
         <Route path="/login" element={<Login/>}/>
-        <Route path="/create_account" element={<CreateAccount/>}/>
+        <Route path="/create-account" element={<CreateAccount/>}/>
         <Route path="/chatbot" element={<Chatbot/>}/> 
       </Routes>
     </BrowserRouter>
