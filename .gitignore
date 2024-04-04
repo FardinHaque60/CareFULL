@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# vscode
+.vscode/
+
 # virtual environment
 /venv
 .venv
@@ -30,5 +33,6 @@ backend/.DS_Store
 backend/backend/.DS_Store
 backend/backend/__pycache__
 backend/backend/scraped/chunked_embedding.csv
+backend/myapi/migrations/__pycache__
 
 .env
