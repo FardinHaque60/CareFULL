@@ -3,5 +3,5 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 @api_view(['GET'])
-def hello_world(request):
-    return Response({'message': 'Hello, world!'})
+def landing_page(request):
+    return Response({'message': "this is the landing page"})

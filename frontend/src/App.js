@@ -1,11 +1,25 @@
-import React from 'react';
-import HelloWorld from './HelloWorld';
+import './App.css';
+import {BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom';
+import React, { useEffect } from 'react';
+import LandingPage from './pages/LandingPage';
+
+// const FallbackRoute = () => {
+//   let navigate = useNavigate();
+  
+//   useEffect(() => {
+//     navigate('/');
+//   }, [navigate]);
+
+//   return null;
+// }
 
 function App() {
   return (
-    <div>
-      <HelloWorld />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage/>}/>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
