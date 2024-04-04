@@ -5,9 +5,8 @@ function LandingPage() {
   const [message, setMessage] = useState('');
   const [data, setData] = useState([]);
 
-  {/* we can go to this link to see debugging info for backend */}
   useEffect(() => {
-    axios.get('http://localhost:8000/api/landing-page/')
+    axios.get('http://localhost:8000/api/landing-page/') //backend link, use for debugging
       .then(response => {
         //setMessage(response.data.message);
         setData(response.data);
