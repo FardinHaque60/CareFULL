@@ -34,3 +34,10 @@
 /frontend/npm-debug.log*
 /frontend/yarn-debug.log*
 /frontend/yarn-error.log*
+
+backend/.DS_Store
+backend/backend/.DS_Store
+backend/backend/__pycache__
+backend/backend/scraped/chunked_embedding.csv
+
+.env
