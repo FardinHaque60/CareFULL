@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './css/Chatbot.css';
+//import './css/Chatbot.css';
 import { Link } from 'react-router-dom';
 
 function Chatbot() {
