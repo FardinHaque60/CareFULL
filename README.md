@@ -15,7 +15,10 @@ To run our application, run the following commands in a Linux terminal:
 * `source venv/bin/activate` to activate virtual environment.  
 * `pip3 install -r requirements.txt` to install all the dependencies needed to run the backend.
 * `cd frontend && npm install` to install needed packages from frontend.
-* open a new terminal and locate to the CareFULL directory and run `cd backend && python manage.py runserver` to run the backend
-* `cd ../frontend && npm start` to run the frontend, this should open a new tab in your browser with the application. If not type [localhost:3000](localhost:3000) in your browser
-
-## TODO: add db migration, set-up information
+### Set Up the Database
+* ensure pgadmin 4 is installed and created a new user `CareFULL` with password `CareFULL`.
+* create a new database for this user named `CareFULL_DB`, make sure it has PUBLIC privileges.
+* run `python manage.py makemigrations && python manage.py migrate` in the backend directory to connect to the database.
+### Run the Application
+* open a new terminal and locate to the CareFULL directory and run `cd backend && python manage.py runserver` to run the backend.
+* `cd ../frontend && npm start` to run the frontend, this should open a new tab in your browser with the application. If not, type [localhost:3000](localhost:3000) in your browser.
