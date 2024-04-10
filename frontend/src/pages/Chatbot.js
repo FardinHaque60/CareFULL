@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './css/Chatbot.css';
+import LandingPage from "./LandingPage"
 
 function Chatbot() {
   const [data, setData] = useState([]);
@@ -16,9 +17,11 @@ function Chatbot() {
   }, []);
 
   return (
-    <div className="text-3xl font-bold">
-      <h1> Chatbot </h1>
-    </div>
+    <LandingPage> 
+      <div className="text-3xl font-bold">
+        <h1> Chatbot </h1>
+      </div>
+    </LandingPage>
   );
 }
 
