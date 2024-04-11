@@ -8,13 +8,13 @@
 .venv
 
 #backend
-backend/backend/__pycache__/
-backend/myapi/__pycache__/
-backend/myapi/migrations/__pycache__/
+/backend/backend/__pycache__/
+/backend/myapi/__pycache__/
+/backend/myapi/migrations/__pycache__/
 
 # dependencies
 /frontend/node_modules
-frontend/package-lock.json
+/frontend/package-lock.json
 /frontend/.pnp
 /frontend/.pnp.js
 
@@ -34,3 +34,10 @@ frontend/package-lock.json
 /frontend/npm-debug.log*
 /frontend/yarn-debug.log*
 /frontend/yarn-error.log*
+
+backend/.DS_Store
+backend/backend/.DS_Store
+backend/backend/__pycache__
+backend/backend/scraped/chunked_embedding.csv
+
+.env
