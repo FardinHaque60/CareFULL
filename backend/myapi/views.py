@@ -2,22 +2,22 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate
 import backend.llm as llm
 
 print("LOADING DATA - THIS WILL TAKE ABOUT A MINUTE")
 df, embeddings = llm.load_data("./backend/scraped/chunked_embedding.csv")
 print("DATA SUCCESSFULL LOADED")
 
+current_user = None #WARN: global variable to represent the current user (avoiding session use)
+
 @api_view(['GET'])
 def landing_page(request):
-    user = request.user #user is saved to a session, so request.user does not work
-    user_info = {'first_name': 'test', 'last_name': 'test2'} 
-    #{
-    #    'first_name': user.first_name,
-    #    'last_name': user.last_name,
-    #    'email': user.email
-    #}
+    user_info = {
+        'first_name': current_user.first_name,
+        'last_name': current_user.last_name,
+        'email': current_user.email
+    }
     return Response(user_info)
 
 @api_view(['POST'])
@@ -27,7 +27,8 @@ def login_view(request):
         email, password = data.get('email'), data.get('password')
         user = authenticate(request, username=email, password=password) #frontend does not save session info
         if user is not None:
-            login(request, user)
+            global current_user
+            current_user = user #WARN: set current user instead of login() session
             return Response({'message': 'succesfully logged in'})
         else:
             return Response({'error': 'invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
@@ -36,7 +37,8 @@ def login_view(request):
 
 @api_view(['POST'])
 def logout_view(request):
-    logout(request) 
+    global current_user
+    current_user = None #WARN: hard ressetting, no session
     return Response({'message': 'successfully logged out'})
 
 @api_view(['POST'])
@@ -60,6 +62,7 @@ def create_account(request):
         return Response({'message': 'account successfully created'})
 
     return Response({'error': 'only POST requests handled'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
 
 @api_view(['GET'])
 def chatbot(request):
