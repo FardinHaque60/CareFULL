@@ -3,7 +3,11 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from django.http import JsonResponse
+import backend.llm as llm
+
+print("LOADING DATA - THIS WILL TAKE ABOUT A MINUTE")
+df, embeddings = llm.load_data("./backend/scraped/chunked_embedding.csv")
+print("DATA SUCCESSFULL LOADED")
 
 @api_view(['GET'])
 def landing_page(request):
@@ -14,7 +18,7 @@ def landing_page(request):
     #    'last_name': user.last_name,
     #    'email': user.email
     #}
-    return JsonResponse(user_info)
+    return Response(user_info)
 
 @api_view(['POST'])
 def login_view(request):
@@ -59,4 +63,7 @@ def create_account(request):
 
 @api_view(['GET'])
 def chatbot(request):
-    return
+    query = llm.get_embedding("I think I might have amyloidosis")
+    max_index, similarities = llm.get_closest(query, embeddings)
+    response = {"text": df.iloc[max_index]}
+    return Response(response, status=status.HTTP_200_OK)
