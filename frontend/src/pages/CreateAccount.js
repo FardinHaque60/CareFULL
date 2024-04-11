@@ -88,7 +88,7 @@ function CreateAccount() {
               <input type="password" class="form-control" value={formData.confirmPassword} id="confirmPassword" onChange={handleChange}/>
             </div>
             {!passwordMatch && <div className="alert alert-danger" role="alert">Passwords do not match</div>}
-            {!validFields && <div className="alert alert-danger" role="alert">Invalid Fields</div>}
+            {!validFields && <div className="alert alert-danger" role="alert">Invalid Field(s)</div>}
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>
         </div>

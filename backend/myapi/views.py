@@ -2,29 +2,26 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from django.http import JsonResponse
 
 @api_view(['GET'])
 def landing_page(request):
-    user = request.user
-    print(user)
-    print(user.is_authenticated)
-    user_info = {'first_name': 'test', 'last_name': 'test2'}
-    
+    user = request.user #user is saved to a session, so request.user does not work
+    user_info = {'first_name': 'test', 'last_name': 'test2'} 
     #{
     #    'first_name': user.first_name,
     #    'last_name': user.last_name,
     #    'email': user.email
     #}
-    return Response(user_info)
+    return JsonResponse(user_info)
 
 @api_view(['POST'])
 def login_view(request):
     if request.method == 'POST':
         data = request.data
         email, password = data.get('email'), data.get('password')
-        user = authenticate(request, username=email, password=password)
+        user = authenticate(request, username=email, password=password) #frontend does not save session info
         if user is not None:
             login(request, user)
             return Response({'message': 'succesfully logged in'})
@@ -35,7 +32,7 @@ def login_view(request):
 
 @api_view(['POST'])
 def logout_view(request):
-    logout(request)
+    logout(request) 
     return Response({'message': 'successfully logged out'})
 
 @api_view(['POST'])

@@ -56,12 +56,6 @@ function Login() {
               <input type="password" className="form-control" value={formData.password} id="password" onChange={handleChange}/>
             </div>
             {!validCredentials && <div className="alert alert-danger" role="alert">Invalid Credentials</div>}
-            {/* 
-            <div class="mb-3 form-check">
-              <input type="checkbox" class="form-check-input" id="exampleCheck1"/>
-              <label class="form-check-label" for="exampleCheck1">Remember Me</label>
-            </div>
-            */}
             <button type="submit" className="btn btn-primary">Submit</button>
           </form>
         </div>
