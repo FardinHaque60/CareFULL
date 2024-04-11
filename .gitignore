@@ -15,7 +15,6 @@
 # dependencies
 /frontend/node_modules
 /frontend/package-lock.json
-/frontend/package.json
 /frontend/.pnp
 /frontend/.pnp.js
 
