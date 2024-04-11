@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import {Link} from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import './css/LandingPage.css';
 
 function LandingPage({children}) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get('http://localhost:8000/api/landing-page/') //backend link, use for debugging
@@ -14,9 +15,20 @@ function LandingPage({children}) {
         setLastName(response.data.last_name);
       })
       .catch(error => {
-        console.log(error);
+        const msg = error.response.data.error;
+        if (msg === 'not logged in' ? navigate('/login') : console.log(error));
       });
-  }, []);
+  });
+
+  const logout = (e) => {
+    axios.post('http://localhost:8000/api/logout/')
+      .then(response => {
+        console.log(response.data)
+      })
+      .catch(error => {
+        console.log(error.response.data)
+      })
+  }
 
   return (
     <div>
@@ -25,7 +37,7 @@ function LandingPage({children}) {
       <div className="container-fluid">
         {/* add logo */}
         <span className="navbar-brand" style={{color: '#154c79', fontFamily: 'Nunito Sans, sans-serif', fontWeight: 'bold' }}> CareFULL </span>
-        <Link to='/login' className='nav-link text-black' > Logout </Link>
+        <Link to='/login' className='nav-link text-black' onClick={logout}> Logout </Link>
       </div>
       </nav>
 

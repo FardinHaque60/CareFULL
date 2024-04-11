@@ -9,6 +9,15 @@ function Login() {
     password: '',
   })
   const navigate = useNavigate();
+  const [loggedIn, setLogin] = useState(false);
+
+  useEffect(() => {
+    axios.get('http://localhost:8000/api/login/')
+      .then(response => {
+        const msg = response.data
+        if (msg.message === 'already logged in' ? setLogin(true) : console.log(response.data));
+      })
+  }, []);
 
   const handleChange = (e) => {
     const {id, value} = e.target;
@@ -41,6 +50,7 @@ function Login() {
           <div>
             <h1> Login </h1>
             <div className="form-text mb-3"> Don't have an Account? <Link to="/create-account"> Create Account </Link> </div>
+            {loggedIn && <div className="alert alert-success" role='alert'> Looks like you are already signed in <Link to='/'> Visit Dashboard </Link></div> }
           </div>
           <div style={{display: 'inline-block', margin: '0 50px', borderLeft: '2px solid black', height: '350px' }}></div>
         </div>

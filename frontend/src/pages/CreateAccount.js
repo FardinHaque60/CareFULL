@@ -49,7 +49,7 @@ function CreateAccount() {
           return;
         }
         else {
-          console.log('error', error.response.data.error);
+          console.log('error', msg);
         }
       });
   } 
