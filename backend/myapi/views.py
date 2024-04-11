@@ -53,6 +53,7 @@ def logout_view(request):
 
 @api_view(['POST'])
 def create_account(request):
+    global current_user
     if request.method == 'POST':
         data = request.data
         first_name, last_name, email, password, confirm_password = data.get('firstName'), data.get('lastName'), data.get('email'), data.get('password'), data.get('confirmPassword')
@@ -69,6 +70,7 @@ def create_account(request):
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+        current_user = user
         return Response({'message': 'account successfully created'})
 
     return Response({'error': 'only POST requests handled'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
