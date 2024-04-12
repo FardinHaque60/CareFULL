@@ -38,11 +38,7 @@ function LandingPage({children}) {
       <div className="container-fluid">
         {/* add logo */}
         <span className="navbar-brand" style={{color: '#154c79', fontFamily: 'Nunito Sans, sans-serif', fontWeight: 'bold' }}> CareFULL </span>
-<<<<<<< Updated upstream
-        <Link to='/login' className='nav-link text-black' onClick={logout}> Logout </Link>
-=======
         <Link to='/login' className='text-black nav-link' > Logout </Link>
->>>>>>> Stashed changes
       </div>
       </nav>
 
