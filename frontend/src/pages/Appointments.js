@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LandingPage from "./LandingPage";
 import './css/Appointments.css';
+import axios from 'axios';
 
 function Appointments() {
   const [appointments, setAppointments] = useState([
@@ -8,6 +9,21 @@ function Appointments() {
     { title: 'Isaac', date: '2024-04-12', time: '11:00 AM', description: 'Performance review' },
     { title: 'Kailer', date: '2024-04-12', time: '12:00 PM', description: 'Performance review' },
   ]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = () => {
+    axios.get('http://localhost:8000/api/get-appointments/')
+      .then(response => {
+        const parsedData = Object.keys(response.data).map(key => response.data[key]);
+        setAppointments([...appointments, ...parsedData]);
+      })
+      .catch(error => {
+        console.log(error.response.data);
+      });
+  }
 
   const [newAppointment, setNewAppointment] = useState({
     title: '',
@@ -18,15 +34,25 @@ function Appointments() {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setNewAppointment((prevAppointment) => ({
-      ...prevAppointment,
-      [name]: value,
-    }));
+    setNewAppointment({...newAppointment, [name]: value,});
   };
+
+  const [saveStatus, setStatus] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setAppointments((prevAppointments) => [...prevAppointments, newAppointment]);
+
+    axios.post('http://localhost:8000/api/save-appointment/', newAppointment)
+      .then(response => {
+        console.log(response.data);
+        setStatus('success');
+        setAppointments([...appointments, newAppointment]);
+      })
+      .catch(error => {
+        console.log(error.response.data);
+        setStatus('fail');
+      });
+
     setNewAppointment({
       title: '',
       date: '',
@@ -84,6 +110,8 @@ function Appointments() {
                 required
               ></textarea>
             </div>
+            {saveStatus === "success" && <div className="alert alert-success">Appointment Saved Succesfully</div>}
+            {saveStatus === "fail" && <div className="alert alert-danger">Could not save Appointment</div>}
             <button type="submit">Add Appointment</button>
           </form>
         </div>
