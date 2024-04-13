@@ -8,7 +8,7 @@ function Chatbot() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/chatbot/') //backend link, use for debugging
+    axios.get('http://localhost:8000/api/load-history/') //backend link, use for debugging
       .then(response => {
         setData(response.data);
       })

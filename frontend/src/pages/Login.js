@@ -12,7 +12,7 @@ function Login() {
   const [loggedIn, setLogin] = useState(false);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/login/')
+    axios.get('http://localhost:8000/api/get-user-status/')
       .then(response => {
         const msg = response.data
         if (msg.message === 'already logged in' ? setLogin(true) : console.log(response.data));
