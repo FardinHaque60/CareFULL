@@ -11,8 +11,8 @@ urlpatterns = [
 #create account endpoint:
     path('create-account/', create_account.create_account, name='create-account'),
 #chatbot endpoints:
-    #path('get-message/', chatbot.get_message, name='get-message'),
-    #path('load-history', chatbot.load_history, name='load-history'),
+    path('get-message/', chatbot.get_message, name='get-message'),
+    path('load-history/', chatbot.load_history, name='load-history'),
 #appointments endpoints:
     path('save-appointment/', appointments.save_appointment, name='save-appointment'),
     path('get-appointments/', appointments.get_appointments, name='get-appointments'),
