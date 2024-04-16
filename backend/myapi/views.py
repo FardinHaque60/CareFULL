@@ -3,12 +3,13 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
-'''
+import pandas as pd
 import backend.llm as llm
+
 print("LOADING DATA - THIS WILL TAKE ABOUT A MINUTE")
-df, embeddings = llm.load_data("./backend/scraped/chunked_embedding.csv")
+emb_df, emb_np = llm.load_data("./backend/scraped/embeddings.csv")
+lookup = pd.read_csv("./backend/scraped/lookup.csv")
 print("DATA SUCCESSFULL LOADED")
-'''
 
 current_user = None #WARN: global variable to represent the current user (avoiding session use)
 
@@ -74,15 +75,25 @@ def create_account(request):
         return Response({'message': 'account successfully created'})
 
     return Response({'error': 'only POST requests handled'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-
-@api_view(['GET'])
-def chatbot(request):
-    return
-
 '''
 @api_view(['GET'])
 def chatbot(request):
-    query = llm.get_embedding("I think I might have amyloidosis")
-    max_index, similarities = llm.get_closest(query, embeddings)
-    response = {"text": df.iloc[max_index]}
-    return Response(response, status=status.HTTP_200_OK) '''
+    return
+'''
+
+@api_view(['GET'])
+def chatbot(request):
+    #query = request.POST.get("prompt")
+    query = "I think i might have amyloidosis"
+
+    query_emb = llm.get_embedding(query)
+
+    # max index is index of max similarity of all chunks
+    max_index, similarities = llm.get_closest(query_emb, emb_np)
+    
+    # get the df_index the most similar chunk belongs to
+    df_max_index = emb_df.iloc[max_index]["df_index"]
+    
+    # return the most similar article the chunk belongs to
+    response = {"text": lookup.iloc[df_max_index]}
+    return Response(response, status=status.HTTP_200_OK)

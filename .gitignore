@@ -39,5 +39,9 @@ backend/.DS_Store
 backend/backend/.DS_Store
 backend/backend/__pycache__
 backend/backend/scraped/chunked_embedding.csv
+backend/backend/scraped/embeddings.csv
+backend/backend/scraped/lookup.csv
 
 .env
+
+backend/backend/__pycache_

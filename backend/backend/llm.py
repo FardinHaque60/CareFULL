@@ -1,18 +1,31 @@
+from collections.abc import Iterable
+from typing import List
 from openai import OpenAI
+from openai.types.chat.chat_completion import ChatCompletion
+from openai.types.chat.chat_completion_message_param import ChatCompletionMessageParam
 import pandas as pd
 import numpy as np
 import ast
+from dotenv import load_dotenv
 
+load_dotenv()
 client = OpenAI()
 
-def chat(prompt: str) -> str:
+def chat(prompt: str, ctx: Iterable[ChatCompletionMessageParam]) -> ChatCompletion:
+    messages=[
+        {"role": "system", "content": "You are an LLM tasked with providing expert guidance and advice on various diseases. Your objective is to assist individuals in making informed decisions regarding disease prevention, early detection, and control measures. You will leverage the latest medical literature, research findings, and best practices in the field of medicine, ensuring that your advice is up-to-date and evidence-based. As a Disease Advisor LLM, you play a crucial role in empowering individuals and communities to lead healthier lives and mitigate the impact of various diseases."},
+    ]
+
+    for message in ctx:
+        messages.append(message)
+    
+    messages.append({"role": "user", "content": prompt})
+
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
-        messages=[
-        {"role": "system", "content": "You are an LLM tasked with providing expert guidance and advice on various diseases. Your objective is to assist individuals in making informed decisions regarding disease prevention, early detection, and control measures. You will leverage the latest medical literature, research findings, and best practices in the field of medicine, ensuring that your advice is up-to-date and evidence-based. As a Disease Advisor LLM, you play a crucial role in empowering individuals and communities to lead healthier lives and mitigate the impact of various diseases."},
-        {"role": "user", "content": prompt}
-        ]
+        messages=messages
     )
+
     return response
 
 def get_embedding(text, model="text-embedding-3-small"):
