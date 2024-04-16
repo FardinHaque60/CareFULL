@@ -11,19 +11,15 @@ function Appointments() {
   ]);
 
   useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = () => {
     axios.get('http://localhost:8000/api/get-appointments/')
       .then(response => {
-        const parsedData = Object.keys(response.data).map(key => response.data[key]);
-        setAppointments([...appointments, ...parsedData]);
+        console.log(response.data);
+        setAppointments([...appointments, ...response.data])
       })
       .catch(error => {
         console.log(error.response.data);
       });
-  }
+  }, []);
 
   const [newAppointment, setNewAppointment] = useState({
     title: '',
@@ -107,7 +103,6 @@ function Appointments() {
                 name="description"
                 value={newAppointment.description}
                 onChange={handleInputChange}
-                required
               ></textarea>
             </div>
             {saveStatus === "success" && <div className="alert alert-success">Appointment Saved Succesfully</div>}

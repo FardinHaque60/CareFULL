@@ -10,16 +10,14 @@ def get_appointments(request):
     current_user = get_user()
     appointments = Appointment.objects.all()
     appointments = Appointment.objects.filter(user_id=current_user)
-    user_appointments = {}
-    count = 0
+    user_appointments = []
     for a in appointments:
-        user_appointments[count] = {
+        user_appointments.append({
             'title': a.title,
             'date': a.date,
             'time': a.time,
             'description': a.description
-        }
-        count = count + 1
+        })
     return Response(user_appointments)
 
 @api_view(['POST'])
