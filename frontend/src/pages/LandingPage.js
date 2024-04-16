@@ -1,65 +1,59 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import './css/LandingPage.css';
+import SideBar from '../components/Sidebar';
 
-function LandingPage() {
-  const [message, setMessage] = useState('');
-  const [data, setData] = useState([]);
+function LandingPage({children}) {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get('http://localhost:8000/api/landing-page/') //backend link, use for debugging
       .then(response => {
-        //setMessage(response.data.message);
-        setData(response.data);
+        setFirstName(response.data.first_name);
+        setLastName(response.data.last_name);
       })
       .catch(error => {
-        console.log(error);
+        const msg = error.response.data.error;
+        if (msg === 'not logged in' ? navigate('/login') : console.log(error));
       });
-  }, []);
+  });
+
+  const logout = (e) => {
+    axios.post('http://localhost:8000/api/logout/')
+      .then(response => {
+        console.log(response.data)
+      })
+      .catch(error => {
+        console.log(error.response.data)
+      })
+  }
 
   return (
     <div>
       {/* top navbar */}
-      <nav className="navbar navbar-light shadow-sm" style={{ backgroundColor: '#e6e6e7'}}>
+      <nav className="shadow-sm navbar navbar-light" style={{ backgroundColor: '#e6e6e7'}}>
       <div className="container-fluid">
         {/* add logo */}
         <span className="navbar-brand" style={{color: '#154c79', fontFamily: 'Nunito Sans, sans-serif', fontWeight: 'bold' }}> CareFULL </span>
+        <Link to='/login' className='text-black nav-link' > Logout </Link>
       </div>
       </nav>
 
-      {/* side navbar */}
-      <div className="d-flex flex-column flex-shrink-0 p-3 shadow" style={{width: '280px', backgroundColor: '#e6e6e7', height: '100vh'}}>
-        <ul className="nav nav-pills flex-column mb-auto custom-ul" style={{paddingTop: '100%'}}>
-          <li className="nav-item">
-            <a href="#" className="nav-link text-black">
-              Home
-            </a>
-          </li>
-          <li className="nav-item">
-            <a href="#" className="nav-link text-black">
-              Health Data
-            </a>
-          </li>
-          <li className="nav-item">
-            <a href="#" className="nav-link text-black">
-              Appointments
-            </a>
-          </li>
-          <li className="nav-item">
-            <a href="#" className="nav-link text-black">
-              Chatbot
-            </a>
-          </li>
-        </ul>
-      </div>
+      <div style={{ display: 'flex' }}>
+        {/* side navbar */}
+        <SideBar />
 
-      {/* old code
-      <h1> Welcome to CareFULL </h1>
-      <p> messages from db: </p>
-      <ul> {data.map(item =>
-        <li key={item.id}> {item.name} </li>
-      )} </ul> {/* this message is taken from backend
-      */}
+        {/* main code under here */}
+        <div> 
+          {children ||
+          <h1> Welcome to CareFULL, {firstName} {lastName} </h1>
+          
+          }
+        </div>
+      </div>
     </div>
   );
 }

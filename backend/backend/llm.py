@@ -18,8 +18,8 @@ def chat(prompt: str) -> str:
 def get_embedding(text, model="text-embedding-3-small"):
     return client.embeddings.create(input=[text], model=model).data[0].embedding
 
-def load_data():
-    embeddings = pd.read_csv("scraped/chunked_embedding.csv", converters={"embedding": ast.literal_eval})
+def load_data(embeddings_path):
+    embeddings = pd.read_csv(embeddings_path, converters={"embedding": ast.literal_eval})
     pd_emb = embeddings["embedding"].to_numpy()
     np_emb = []
     for row in pd_emb:
@@ -31,5 +31,3 @@ def get_closest(query_embedding, embeddings):
     similarities = np.dot(embeddings, query_embedding)
     max_index = np.argmax(similarities)
     return max_index, similarities
-
-

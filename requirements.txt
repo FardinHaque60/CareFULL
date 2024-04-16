@@ -20,6 +20,7 @@ jupyter_core==5.7.1
 matplotlib-inline==0.1.6
 nest-asyncio==1.6.0
 numpy==1.26.4
+openai==1.16.2
 packaging==23.2
 pandas==2.2.0
 parso==0.8.3
