@@ -81,19 +81,31 @@ def chatbot(request):
     return
 '''
 
-@api_view(['GET'])
+@api_view(['POST'])
 def chatbot(request):
-    #query = request.POST.get("prompt")
-    query = "I think i might have amyloidosis"
+
+    query = request.POST.get("prompt")
+    # TODO get previous messages from user
+    # this might be handled in the frontend if we are not storing messages in database
+    ctx = request.POST.get("ctx")
+
+    # df_max_index should be -1 if it is the first message in a chat.
+    # otherwise, df_max_index should be the passed so that the same context is used
+    # for all subsequent messages in a chat
+    df_max_index = request.POST.get("df_max_index")
+
 
     query_emb = llm.get_embedding(query)
 
-    # max index is index of max similarity of all chunks
-    max_index, similarities = llm.get_closest(query_emb, emb_np)
+    # if is the first message in a chat, then we want to get the context document
+    if df_max_index == -1:
+        # max index is index of max similarity of all chunks
+        max_index, similarities = llm.get_closest(query_emb, emb_np)
+        # get the df_index the most similar chunk belongs to
+        df_max_index = emb_df.iloc[max_index]["df_index"]
     
-    # get the df_index the most similar chunk belongs to
-    df_max_index = emb_df.iloc[max_index]["df_index"]
-    
-    # return the most similar article the chunk belongs to
-    response = {"text": lookup.iloc[df_max_index]}
-    return Response(response, status=status.HTTP_200_OK)
+    # get and append context document to query
+    document = lookup.iloc[df_max_index].item()
+    query += "\nThe following article from WebMD may potentially be relevant to the question, use it if it is appropriate to the user's query.\n" + document
+
+    return llm.chat(query, ctx), df_max_index
