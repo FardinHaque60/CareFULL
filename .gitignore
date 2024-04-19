@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# MacOS
+.DS_Store
+
 #vscode
 .vscode
 
@@ -11,6 +14,7 @@
 /backend/backend/__pycache__/
 /backend/myapi/__pycache__/
 /backend/myapi/migrations/__pycache__/
+/backend/myapi/views/__pycache__
 
 # dependencies
 /frontend/node_modules
@@ -42,6 +46,9 @@ backend/backend/scraped/chunked_embedding.csv
 backend/backend/scraped/embeddings.csv
 backend/backend/scraped/lookup.csv
 
+backend/backend/__pycache_
+# API keys
 .env
 
-backend/backend/__pycache_
+# jupyter notebooks
+/backend/backend/test_llm.ipynb
