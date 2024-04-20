@@ -14,15 +14,16 @@ def load_history(request):
 
 @api_view(['POST'])
 def get_message(request):
-    query = request.POST.get("prompt")
+    data  = request.data
+    query = data.get("prompt")
     # TODO get previous messages from user
     # this might be handled in the frontend if we are not storing messages in database
-    ctx = request.POST.get("ctx")
+    ctx = data.get("ctx")
 
     # df_max_index should be -1 if it is the first message in a chat.
     # otherwise, df_max_index should be the passed so that the same context is used
     # for all subsequent messages in a chat
-    df_max_index = request.POST.get("df_max_index")
+    df_max_index = data.get("df_max_index")
 
 
     query_emb = llm.get_embedding(query)
