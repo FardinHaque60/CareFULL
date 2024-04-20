@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import {Link} from 'react-router-dom'
-
-import axios from 'axios';
+import React from 'react';
+import {Link} from 'react-router-dom';
 
 function SideBar() {
   
@@ -34,5 +32,3 @@ function SideBar() {
 }
 
 export default SideBar; 
-
-

@@ -24,7 +24,7 @@ function LandingPage({children}) {
         const msg = error.response.data.error;
         if (msg === 'not logged in' ? navigate('/login') : console.log(error));
       });
-  }, []);
+  }, [userData, navigate]);
 
   const logout = (e) => {
     axios.post('http://localhost:8000/api/logout/')
