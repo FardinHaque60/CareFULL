@@ -1,20 +1,11 @@
 import './App.css';
-import {BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom';
-import React, { useEffect } from 'react';
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import React from 'react';
 import LandingPage from './pages/LandingPage';
 import Login from './pages/Login';
 import CreateAccount from './pages/CreateAccount'
 import Chatbot from './pages/Chatbot';
 import Appointments from './pages/Appointments';
-// const FallbackRoute = () => {
-//   let navigate = useNavigate();
-  
-//   useEffect(() => {
-//     navigate('/');
-//   }, [navigate]);
-
-//   return null;
-// }
 
 function App() {
   return (

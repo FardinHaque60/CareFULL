@@ -4,22 +4,22 @@ import './css/Appointments.css';
 import axios from 'axios';
 
 function Appointments() {
-  const [appointments, setAppointments] = useState([
-    { title: 'Fardin', date: '2024-04-12', time: '10:00 AM', description: 'Performance review' },
-    { title: 'Isaac', date: '2024-04-12', time: '11:00 AM', description: 'Performance review' },
-    { title: 'Kailer', date: '2024-04-12', time: '12:00 PM', description: 'Performance review' },
-  ]);
+  const [appointments, setAppointments] = useState([]);
 
   useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = () => { //overwrites existing appointments with fetched data from backend
     axios.get('http://localhost:8000/api/get-appointments/')
       .then(response => {
         console.log(response.data);
-        setAppointments([...appointments, ...response.data])
+        setAppointments(response.data)
       })
       .catch(error => {
         console.log(error.response.data);
       });
-  }, []);
+  }
 
   const [newAppointment, setNewAppointment] = useState({
     title: '',
@@ -30,7 +30,7 @@ function Appointments() {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setNewAppointment({...newAppointment, [name]: value,});
+    setNewAppointment({...newAppointment, [name]: value});
   };
 
   const [saveStatus, setStatus] = useState('');
@@ -42,13 +42,13 @@ function Appointments() {
       .then(response => {
         console.log(response.data);
         setStatus('success');
-        setAppointments([...appointments, newAppointment]);
+        fetchData();
       })
       .catch(error => {
         console.log(error.response.data);
         setStatus('fail');
       });
-
+      
     setNewAppointment({
       title: '',
       date: '',

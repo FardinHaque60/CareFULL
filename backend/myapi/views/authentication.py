@@ -28,7 +28,7 @@ def login(request):
 def get_user_status(request):
     global current_user
     if current_user:
-            return Response({'message': 'already logged in'})
+        return Response({'message': 'already logged in'})
     else:
         return Response({'message': 'ok'})
 
