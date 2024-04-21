@@ -30,7 +30,7 @@ function Appointments() {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setNewAppointment({...newAppointment, [name]: value,});
+    setNewAppointment({...newAppointment, [name]: value});
   };
 
   const [saveStatus, setStatus] = useState('');
@@ -48,7 +48,7 @@ function Appointments() {
         console.log(error.response.data);
         setStatus('fail');
       });
-
+      
     setNewAppointment({
       title: '',
       date: '',
