@@ -1,19 +1,63 @@
 from . import api_view, Response, status
 import pandas as pd
+from ..models import Message
+from datetime import datetime
+from .authentication import get_user
 
-import backend.llm as llm
+#import backend.llm as llm
 
 print("LOADING DATA - THIS WILL TAKE ABOUT A MINUTE")
-emb_df, emb_np = llm.load_data("./backend/scraped/embeddings.csv")
-lookup = pd.read_csv("./backend/scraped/lookup.csv")
+#emb_df, emb_np = llm.load_data("./backend/scraped/embeddings.csv")
+#lookup = pd.read_csv("./backend/scraped/lookup.csv")
 print("DATA SUCCESSFULL LOADED")
+
+current_user = get_user()
 
 @api_view(['GET'])
 def load_history(request):
-    return
+    global current_user
+    current_user = get_user()
+    messages = Message.objects.filter(user=current_user).order_by('date', 'time')
+    user_history = []
+    for msg in messages:
+        response_type = "prompt: " #prepend whether this is a prompt or a response msg
+        if (msg.response):
+            response_type = "response: "
+        user_history.append(response_type + msg.body)
+
+    return Response(user_history)
 
 @api_view(['POST'])
 def get_message(request):
+    global current_user
+    current_user = get_user()
+    current_datetime = datetime.now()
+    date = current_datetime.strftime('%Y-%m-%d')
+    time = current_datetime.strftime('%H:%M:%S')
+
+    user_prompt = request.data.get('userMsg')
+    message = Message.objects.create(user=current_user, body=user_prompt, date=date, time=time, prompt=True)
+    message.save()
+
+    response = "message received, here is your response" #TODO: replace with actual response
+    '''
+    
+    implementation for getting chatbot response
+    TODO how to pass data as ctx? is this a list data type that it accepts
+    do we have to store df_max_index in database? is it attached with the messages
+        fardin: I should be able to do that easily by adding a df_max_index column to the messages table and getting the df_index from the last message based on the sorted order
+    
+    '''
+    current_datetime = datetime.now()
+    date = current_datetime.strftime('%Y-%m-%d')
+    time = current_datetime.strftime('%H:%M:%S')
+
+    message = Message.objects.create(user=current_user, body=response, date=date, time=time, response=True)
+    message.save()
+
+    return Response("response: " + response)
+
+    '''
     data  = request.data
     query = data.get("prompt")
     # TODO get previous messages from user
@@ -39,4 +83,4 @@ def get_message(request):
     document = lookup.iloc[df_max_index].item()
     query += "\nThe following article from WebMD may potentially be relevant to the question, use it if it is appropriate to the user's query.\n" + document
 
-    return llm.chat(query, ctx), df_max_index
+    return llm.chat(query, ctx), df_max_index '''
