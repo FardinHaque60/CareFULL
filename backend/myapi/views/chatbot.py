@@ -3,6 +3,7 @@ import pandas as pd
 from ..models import Message
 from datetime import datetime
 from .authentication import get_user
+import time as temp_time # remove later, just used for testing delayed responses
 
 #import backend.llm as llm
 
@@ -17,13 +18,17 @@ current_user = get_user()
 def load_history(request):
     global current_user
     current_user = get_user()
-    messages = Message.objects.filter(user=current_user).order_by('date', 'time')
+    messages = Message.objects.filter(user=current_user).order_by('id') #TODO may cause bugs in the future if id's are not generated in order, better to sort by date time
     user_history = []
     for msg in messages:
-        response_type = "prompt: " #prepend whether this is a prompt or a response msg
+        response_type = "user"
         if (msg.response):
-            response_type = "response: "
-        user_history.append(response_type + msg.body)
+            response_type = "assistant"
+        msg_obj = { 
+            "role": response_type,
+            "content": msg.body,   
+        }
+        user_history.append(msg_obj)
 
     return Response(user_history)
 
@@ -31,7 +36,7 @@ def load_history(request):
 def get_message(request):
     global current_user
     current_user = get_user()
-    current_datetime = datetime.now()
+    current_datetime = datetime.now() #TODO date time are returning weird values, look into timezone etc.
     date = current_datetime.strftime('%Y-%m-%d')
     time = current_datetime.strftime('%H:%M:%S')
 
@@ -55,7 +60,8 @@ def get_message(request):
     message = Message.objects.create(user=current_user, body=response, date=date, time=time, response=True)
     message.save()
 
-    return Response("response: " + response)
+    temp_time.sleep(3)
+    return Response(response)
 
     '''
     data  = request.data
