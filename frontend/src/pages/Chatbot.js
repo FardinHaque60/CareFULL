@@ -2,33 +2,25 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './css/Chatbot.css';
 import LandingPage from "./LandingPage";
-import dummyMessages from './dummyData';
 
 function Chatbot() {
   const [messages, setMessages] = useState([]);
   const [prompt, setPrompt] = useState({ userMsg: '' });
-  const [useDummyData, setUseDummyData] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (useDummyData) {
-      setMessages(dummyMessages);
-    } else {
       fetchData();
-    }
-  }, [useDummyData]);
+  }, []);
 
   const fetchData = () => {
-    if (!useDummyData) {
-      axios.get('http://localhost:8000/api/load-history/')
-        .then(response => {
-          setMessages(response.data);
-          console.log(messages);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
+    axios.get('http://localhost:8000/api/load-history/')
+      .then(response => {
+        setMessages(response.data);
+        console.log(messages);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   const handleChange = (event) => {
