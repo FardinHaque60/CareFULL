@@ -41,7 +41,6 @@ function LandingPage({children}) {
       {/* top navbar */}
       <nav className="shadow-sm navbar navbar-light" style={{ backgroundColor: '#e6e6e7'}}>
       <div className="container-fluid">
-        {/* add logo */}
         <span className="navbar-brand" style={{color: '#154c79', fontFamily: 'Nunito Sans, sans-serif', fontWeight: 'bold' }}> CareFULL </span>
         <Link to='/login' className='text-black nav-link' onClick={logout}> Logout </Link>
       </div>
@@ -52,11 +51,8 @@ function LandingPage({children}) {
         <SideBar />
 
         {/* main code under here */}
-        <div> 
-          {children ||
-          <h1> Welcome to CareFULL, {userData.firstName} {userData.lastName} </h1>
-          
-          }
+        <div className="main-content">
+          {children || <h1>Welcome to CareFULL, {userData.firstName} {userData.lastName}</h1>}
         </div>
       </div>
     </div>
