@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import LandingPage from "./LandingPage";
-import './css/HealthData.css';
+import './css/Appointments.css';
 import axios from 'axios';
 
 function HealthData() {
