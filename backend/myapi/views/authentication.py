@@ -19,7 +19,7 @@ def get_user_chat_messages():
 
 def set_user_chat_messages(messages):
     global chat_messages
-    chat_messages = [messages]
+    chat_messages = messages
 
 def add_user_chat_message(message):
     global chat_messages

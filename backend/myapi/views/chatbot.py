@@ -9,7 +9,7 @@ import backend.llm as llm
 
 print("LOADING DATA - THIS WILL TAKE ABOUT A MINUTE")
 emb_df, emb_np = llm.load_data("./backend/scraped/embeddings.csv")
-lookup = pd.read_csv("./backend/scraped/lookup.csv")
+#lookup = pd.read_csv("./backend/scraped/lookup.csv")
 print("DATA SUCCESSFULL LOADED")
 
 current_user = get_user()
@@ -41,6 +41,7 @@ def get_message(request):
     date = current_datetime.strftime('%Y-%m-%d')
     time = current_datetime.strftime('%H:%M:%S')
 
+    #save the user msg to db
     user_prompt = request.data.get('userMsg')
     message = Message.objects.create(user=current_user, body=user_prompt, date=date, time=time, prompt=True)
     message.save()
@@ -57,9 +58,10 @@ def get_message(request):
     # df_max_index should be -1 if it is the first message in a chat.
     # otherwise, df_max_index should be the passed so that the same context is used
     # for all subsequent messages in a chat
-    # df_max_index = data.get("df_max_index") TODO implement df_index for document finding
 
-    query_emb = llm.get_embedding(user_prompt)
+
+    # df_max_index = data.get("df_max_index") TODO implement df_index for document finding
+    #query_emb = llm.get_embedding(user_prompt)
 
     '''
     # if is the first message in a chat, then we want to get the context document
@@ -74,15 +76,22 @@ def get_message(request):
     query += "\nThe following article from WebMD may potentially be relevant to the question, use it if it is appropriate to the user's query.\n" + document
     '''
 
-    response = llm.chat(user_prompt, ctx) #, df_max_index
-    add_user_chat_message(response)
+    temp_response = llm.chat(user_prompt, ctx) #, df_max_index
+    print(temp_response)
 
     current_datetime = datetime.now()
     date = current_datetime.strftime('%Y-%m-%d')
     time = current_datetime.strftime('%H:%M:%S')
 
+    #save response to db
     message = Message.objects.create(user=current_user, body=response, date=date, time=time, response=True)
     message.save()
 
-    temp_time.sleep(3)
+    user_prompt = {"role": "user", "content": user_prompt}
+    response = {"role": "assistant", "content": response}
+    add_user_chat_message(user_prompt)
+    add_user_chat_message(response)
+    print(get_user_chat_messages())
+
+    #temp_time.sleep(3)
     return Response(response)
