@@ -1,5 +1,5 @@
 from . import Response, api_view, status
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate
 
 current_user = None #WARN global var used to represent current state of user to avoid session
 chat_messages = []
@@ -32,7 +32,6 @@ def login(request):
     email, password = data.get('email'), data.get('password')
     user = authenticate(request, username=email, password=password) #frontend does not save session info
     if user is not None:
-        login(user) #does not utilize sessions, just used so database tracks last login time, etc.
         current_user = user #WARN: set current user instead of login() session
         return Response({'message': 'succesfully logged in'})
     else:
@@ -50,7 +49,6 @@ def get_user_status(request):
 def logout(request):
     global current_user
     if current_user:
-        logout(current_user) #no sessions, just used for database updation
         current_user = None #WARN: hard ressetting, no session
         return Response({'message': 'successfully logged out'})
     return Response({'error': 'problem logging out'}, status=status.HTTP_400_BAD_REQUEST)

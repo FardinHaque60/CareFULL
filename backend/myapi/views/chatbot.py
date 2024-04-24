@@ -9,7 +9,7 @@ import backend.llm as llm
 
 print("LOADING DATA - THIS WILL TAKE ABOUT A MINUTE")
 emb_df, emb_np = llm.load_data("./backend/scraped/embeddings.csv")
-#lookup = pd.read_csv("./backend/scraped/lookup.csv")
+lookup = pd.read_csv("./backend/scraped/lookup.csv")
 print("DATA SUCCESSFULL LOADED")
 
 current_user = get_user()
@@ -33,6 +33,20 @@ def load_history(request):
     set_user_chat_messages(user_history)
     return Response(user_history)
 
+@api_view(["GET"])
+def clear_history(request):
+    global current_user
+    current_user = get_user()
+    try:
+        delete_messages = Message.objects.filter(user=current_user)
+        delete_messages.delete() #delete the messages
+        current_user.df_max_index = -1 #reset chat context back to start
+        current_user.save()
+        set_user_chat_messages([]) #clear local chat history for when context calls it
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    return Response([])
+
 @api_view(['POST'])
 def get_message(request):
     global current_user
@@ -46,52 +60,44 @@ def get_message(request):
     message = Message.objects.create(user=current_user, body=user_prompt, date=date, time=time, prompt=True)
     message.save()
 
-    response = "message received, here is your response" #TODO: replace with actual response
-
     # chatbot generated response implementation below 
-
-    #query = data.get("prompt")
-    # TODO get previous messages from user
-    # this might be handled in the frontend if we are not storing messages in database
     ctx = get_user_chat_messages()
 
+    # TODO handle df_index
     # df_max_index should be -1 if it is the first message in a chat.
     # otherwise, df_max_index should be the passed so that the same context is used
     # for all subsequent messages in a chat
+    df_max_index = current_user.df_max_index
+    query_emb = llm.get_embedding(user_prompt)
 
-
-    # df_max_index = data.get("df_max_index") TODO implement df_index for document finding
-    #query_emb = llm.get_embedding(user_prompt)
-
-    '''
     # if is the first message in a chat, then we want to get the context document
     if df_max_index == -1:
         # max index is index of max similarity of all chunks
         max_index, similarities = llm.get_closest(query_emb, emb_np)
         # get the df_index the most similar chunk belongs to
         df_max_index = emb_df.iloc[max_index]["df_index"]
+        current_user.df_max_index = df_max_index
+        current_user.save()
     
     # get and append context document to query
     document = lookup.iloc[df_max_index].item()
-    query += "\nThe following article from WebMD may potentially be relevant to the question, use it if it is appropriate to the user's query.\n" + document
-    '''
+    user_prompt += "\nThe following article from WebMD may potentially be relevant to the question, use it if it is appropriate to the user's query.\n" + document
 
-    temp_response = llm.chat(user_prompt, ctx) #, df_max_index
-    print(temp_response)
+    response = llm.chat(user_prompt, ctx) #, df_max_index
+    chat_response_obj = response.choices[0].message
 
     current_datetime = datetime.now()
     date = current_datetime.strftime('%Y-%m-%d')
     time = current_datetime.strftime('%H:%M:%S')
 
     #save response to db
-    message = Message.objects.create(user=current_user, body=response, date=date, time=time, response=True)
+    message = Message.objects.create(user=current_user, body=chat_response_obj.content, date=date, time=time, response=True)
     message.save()
 
     user_prompt = {"role": "user", "content": user_prompt}
-    response = {"role": "assistant", "content": response}
+    chat_response = {"role": "assistant", "content": chat_response_obj.content}
     add_user_chat_message(user_prompt)
-    add_user_chat_message(response)
-    print(get_user_chat_messages())
+    add_user_chat_message(chat_response)
 
     #temp_time.sleep(3)
-    return Response(response)
+    return Response(chat_response_obj.content)
