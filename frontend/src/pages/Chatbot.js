@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './css/Chatbot.css';
 import LandingPage from "./LandingPage";
+import ReactMarkdown from 'react-markdown';
 
 function Chatbot() {
   const [messages, setMessages] = useState([]);
@@ -31,6 +32,7 @@ function Chatbot() {
   const handleMsgSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setMessages([...messages, { role: 'user', content: prompt.userMsg }])
     axios.post('http://localhost:8000/api/get-message/', prompt)
       .then(response => {
         const msg = response.data;
@@ -44,13 +46,27 @@ function Chatbot() {
     setPrompt({ userMsg: '' });
   }
 
+  const clearChatHistory = (e) => {
+    axios.get('http://localhost:8000/api/clear-chat-history/')
+      .then(response => {
+        setMessages(response.data)
+      })
+      .catch(error => {
+        console.log(error.response.data)
+      });
+  }
+
   return (
     <LandingPage>
       <div className="chatbot-container">
+        <button
+          className="btn btn-danger"
+          onClick={clearChatHistory}
+        > Clear Chat </button>
         <div className="chatbot-messages">
           {messages.map((message, index) => (
             <div key={index} className={`message ${message.role}`}>
-              {message.content}
+              <ReactMarkdown>{message.content}</ReactMarkdown>
             </div>
           ))}
         </div>
