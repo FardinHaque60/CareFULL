@@ -1,4 +1,5 @@
 from . import Response, api_view, status
+from myapi.models import myUser
 from django.contrib.auth.models import User
 from .authentication import set_user
 
@@ -15,7 +16,7 @@ def create_account(request):
             return Response({'error': 'invalid fields'}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            user = User.objects.create_user(username=email, first_name=first_name, last_name=last_name, email=email, password=password)
+            user = myUser.objects.create_user(username=email, first_name=first_name, last_name=last_name, email=email, password=password)
             user.save()
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

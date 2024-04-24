@@ -2,6 +2,7 @@ from . import Response, api_view, status
 from django.contrib.auth import authenticate
 
 current_user = None #WARN global var used to represent current state of user to avoid session
+chat_messages = []
 
 #helper method for other files to return the current_user in session
 def get_user():
@@ -11,6 +12,18 @@ def get_user():
 def set_user(state):
     global current_user
     current_user = state
+
+def get_user_chat_messages():
+    global chat_messages
+    return chat_messages
+
+def set_user_chat_messages(messages):
+    global chat_messages
+    chat_messages = messages
+
+def add_user_chat_message(message):
+    global chat_messages
+    chat_messages.append(message)
 
 @api_view(['POST'])
 def login(request):

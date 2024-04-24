@@ -13,6 +13,7 @@ urlpatterns = [
 #chatbot endpoints:
     path('get-message/', chatbot.get_message, name='get-message'),
     path('load-history/', chatbot.load_history, name='load-history'),
+    path('clear-chat-history/', chatbot.clear_history, name='clear-chat-history'),
 #appointments endpoints:
     path('save-appointment/', appointments.save_appointment, name='save-appointment'),
     path('get-appointments/', appointments.get_appointments, name='get-appointments'),
