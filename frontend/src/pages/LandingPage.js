@@ -101,79 +101,74 @@ function LandingPage({ children }) {
         {/* main code under here */}
         <div className="main-content">
           {children || (
-            <>
-              <h1>
-                Welcome to CareFULL, {userData.firstName} {userData.lastName}
-              </h1>
-              <div className="health-data-container">
-                <div className="health-data-header">
-                  <h2>Your Day at a Glance, John</h2>
-                  <div className="data-buttons">
-                    <button onClick={() => openModal('weight')}>Weight Data</button>
-                    <button onClick={() => openModal('steps')}>Steps Data</button>
-                    <button onClick={() => openModal('heart')}>Heart Data</button>
-                    <button>Other Data</button>
-                  </div>
+            <div className="health-data-container">
+              <div className="health-data-header">
+                <h2>Your Day at a Glance, {userData.firstName} {userData.lastName}</h2>
+                <div className="data-buttons">
+                  <button className="btn btn-primary" onClick={() => openModal('weight')}>+ Weight Data</button>
+                  <button className="btn btn-primary" onClick={() => openModal('steps')}>+ Steps Data</button>
+                  <button className="btn btn-primary" onClick={() => openModal('heart')}>+ Heart Data</button>
+                  <button className="btn btn-primary" >+ Other Data</button>
                 </div>
-                <div className="health-data-summary">
-                  <div>
-                    <p>Weight Change</p>
-                    <p>{healthData.weightChange}</p>
-                    <p>Total Change This Week</p>
-                  </div>
-                  <div>
-                    <p>Steps</p>
-                    <p>{healthData.stepsThisWeek}</p>
-                    <p>This Week</p>
-                  </div>
-                  <div>
-                    <p>Heart Rate</p>
-                    <p>{healthData.avgHeartRateThisWeek}</p>
-                    <p>Avg This Week</p>
-                  </div>
+              </div>
+              <div className="health-data-summary">
+                <div>
+                  <p>Weight Change</p>
+                  <p>{healthData.weightChange}</p>
+                  <p>Total Change This Week</p>
                 </div>
-                <div className="health-data-charts">
-                  <div className="heart-health-chart">
-                    <h3>Heart Health</h3>
-                    <div className="chart-container">
-                      {/* Render heart rate chart */}
-                      <div className="heart-rate-chart">
-                        {healthData.heartRateData.map((data) => (
-                          <div key={data.month} className="chart-bar" style={{ height: `${data.rate}px` }}>
-                            <span>{data.month}</span>
-                          </div>
-                        ))}
-                      </div>
+                <div>
+                  <p>Steps</p>
+                  <p>{healthData.stepsThisWeek}</p>
+                  <p>This Week</p>
+                </div>
+                <div>
+                  <p>Heart Rate</p>
+                  <p>{healthData.avgHeartRateThisWeek}</p>
+                  <p>Avg This Week</p>
+                </div>
+              </div>
+              <div className="health-data-charts">
+                <div className="heart-health-chart">
+                  <h3>Heart Health</h3>
+                  <div className="chart-container">
+                    {/* Render heart rate chart */}
+                    <div className="heart-rate-chart">
+                      {healthData.heartRateData.map((data) => (
+                        <div key={data.month} className="chart-bar" style={{ height: `${data.rate}px` }}>
+                          <span>{data.month}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                  <div className="time-spent-chart">
-                    <h3>Time Spent</h3>
-                    <div className="chart-container">
-                      {/* Render time spent chart */}
-                      <div className="time-spent-chart-inner">
-                        <div
-                          className="sleep-bar"
-                          style={{ width: `${(healthData.timeSpentData.sleep / 24) * 100}%` }}
-                        ></div>
-                        <div
-                          className="indoor-bar"
-                          style={{ width: `${(healthData.timeSpentData.indoor / 24) * 100}%` }}
-                        ></div>
-                        <div
-                          className="outdoor-bar"
-                          style={{ width: `${(healthData.timeSpentData.outdoor / 24) * 100}%` }}
-                        ></div>
-                      </div>
-                      <div className="chart-labels">
-                        <span>Sleep</span>
-                        <span>Indoor</span>
-                        <span>Outdoor</span>
-                      </div>
+                </div>
+                <div className="time-spent-chart">
+                  <h3>Time Spent</h3>
+                  <div className="chart-container">
+                    {/* Render time spent chart */}
+                    <div className="time-spent-chart-inner">
+                      <div
+                        className="sleep-bar"
+                        style={{ width: `${(healthData.timeSpentData.sleep / 24) * 100}%` }}
+                      ></div>
+                      <div
+                        className="indoor-bar"
+                        style={{ width: `${(healthData.timeSpentData.indoor / 24) * 100}%` }}
+                      ></div>
+                      <div
+                        className="outdoor-bar"
+                        style={{ width: `${(healthData.timeSpentData.outdoor / 24) * 100}%` }}
+                      ></div>
+                    </div>
+                    <div className="chart-labels">
+                      <span>Sleep</span>
+                      <span>Indoor</span>
+                      <span>Outdoor</span>
                     </div>
                   </div>
                 </div>
               </div>
-            </>
+            </div>
           )}
         </div>
       </div>
