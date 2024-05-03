@@ -5,20 +5,13 @@ import './css/LandingPage.css';
 import SideBar from '../components/Sidebar';
 
 function LandingPage({children}) {
-  const [userData, setUserData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-  });
+  const [userData, setUserData] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
     axios.get('http://localhost:8000/api/get-user-info/') //backend link, use for debugging
       .then(response => {
-        setUserData({...userData, 
-        'firstName': response.data.first_name, 
-        'lastName': response.data.last_name,
-        'email': response.data.email});
+        setUserData(response.data);
       })
       .catch(error => {
         const msg = error.response.data.error;

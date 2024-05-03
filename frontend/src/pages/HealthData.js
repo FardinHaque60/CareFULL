@@ -1,31 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './css/LandingPage.css';
-import SideBar from '../components/Sidebar';
+import './css/HealthData.css';
 import Modal from '../components/Modal.js';
+import LandingPage from './LandingPage.js';
 
-function LandingPage({ children }) {
-  const [userData, setUserData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-  });
+function HealthData() {
+  const [userData, setUserData] = useState({});
   const [isWeightModalOpen, setWeightModalOpen] = useState(false);
   const [isStepsModalOpen, setStepsModalOpen] = useState(false);
   const [isHeartModalOpen, setHeartModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios
-      .get('http://localhost:8000/api/get-user-info/') //backend link, use for debugging
+    axios.get('http://localhost:8000/api/get-user-info/') //backend link, use for debugging
       .then((response) => {
-        setUserData({
-          ...userData,
-          firstName: response.data.first_name,
-          lastName: response.data.last_name,
-          email: response.data.email,
-        });
+        console.log(response.data);
+        setUserData(response.data);
       })
       .catch((error) => {
         const msg = error.response.data.error;
@@ -33,17 +24,6 @@ function LandingPage({ children }) {
         else console.log(error);
       });
   }, []);
-
-  const logout = (e) => {
-    axios
-      .post('http://localhost:8000/api/logout/')
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-      });
-  };
 
   const openModal = (modal) => {
     if (modal === 'weight') setWeightModalOpen(true);
@@ -76,100 +56,73 @@ function LandingPage({ children }) {
   };
 
   return (
-    <div>
-      {/* top navbar */}
-      <nav className="shadow-sm navbar navbar-light" style={{ backgroundColor: '#e6e6e7' }}>
-        <div className="container-fluid">
-          <span
-            className="navbar-brand"
-            style={{
-              color: '#154c79',
-              fontFamily: 'Nunito Sans, sans-serif',
-              fontWeight: 'bold',
-            }}
-          >
-            CareFULL
-          </span>
-          <Link to="/login" className="text-black nav-link" onClick={logout}>
-            Logout
-          </Link>
+    <LandingPage>
+      <div className="health-data-container">
+        <div className="health-data-header">
+          <h2>Your Day at a Glance, {userData.firstName} {userData.lastName}</h2>
+          <div className="data-buttons">
+            <button className="btn btn-primary" onClick={() => openModal('weight')}>+ Weight Data</button>
+            <button className="btn btn-primary" onClick={() => openModal('steps')}>+ Steps Data</button>
+            <button className="btn btn-primary" onClick={() => openModal('heart')}>+ Heart Data</button>
+            <button className="btn btn-primary" >+ Other Data</button>
+          </div>
         </div>
-      </nav>
-      <div style={{ display: 'flex' }}>
-        {/* side navbar */}
-        <SideBar />
-        {/* main code under here */}
-        <div className="main-content">
-          {children || (
-            <div className="health-data-container">
-              <div className="health-data-header">
-                <h2>Your Day at a Glance, {userData.firstName} {userData.lastName}</h2>
-                <div className="data-buttons">
-                  <button className="btn btn-primary" onClick={() => openModal('weight')}>+ Weight Data</button>
-                  <button className="btn btn-primary" onClick={() => openModal('steps')}>+ Steps Data</button>
-                  <button className="btn btn-primary" onClick={() => openModal('heart')}>+ Heart Data</button>
-                  <button className="btn btn-primary" >+ Other Data</button>
-                </div>
-              </div>
-              <div className="health-data-summary">
-                <div>
-                  <p>Weight Change</p>
-                  <p>{healthData.weightChange}</p>
-                  <p>Total Change This Week</p>
-                </div>
-                <div>
-                  <p>Steps</p>
-                  <p>{healthData.stepsThisWeek}</p>
-                  <p>This Week</p>
-                </div>
-                <div>
-                  <p>Heart Rate</p>
-                  <p>{healthData.avgHeartRateThisWeek}</p>
-                  <p>Avg This Week</p>
-                </div>
-              </div>
-              <div className="health-data-charts">
-                <div className="heart-health-chart">
-                  <h3>Heart Health</h3>
-                  <div className="chart-container">
-                    {/* Render heart rate chart */}
-                    <div className="heart-rate-chart">
-                      {healthData.heartRateData.map((data) => (
-                        <div key={data.month} className="chart-bar" style={{ height: `${data.rate}px` }}>
-                          <span>{data.month}</span>
-                        </div>
-                      ))}
-                    </div>
+        <div className="health-data-summary">
+          <div>
+            <p>Weight Change</p>
+            <p>{healthData.weightChange}</p>
+            <p>Total Change This Week</p>
+          </div>
+          <div>
+            <p>Steps</p>
+            <p>{healthData.stepsThisWeek}</p>
+            <p>This Week</p>
+          </div>
+          <div>
+            <p>Heart Rate</p>
+            <p>{healthData.avgHeartRateThisWeek}</p>
+            <p>Avg This Week</p>
+          </div>
+        </div>
+        <div className="health-data-charts">
+          <div className="heart-health-chart">
+            <h3>Heart Health</h3>
+            <div className="chart-container">
+              {/* Render heart rate chart */}
+              <div className="heart-rate-chart">
+                {healthData.heartRateData.map((data) => (
+                  <div key={data.month} className="chart-bar" style={{ height: `${data.rate}px` }}>
+                    <span>{data.month}</span>
                   </div>
-                </div>
-                <div className="time-spent-chart">
-                  <h3>Time Spent</h3>
-                  <div className="chart-container">
-                    {/* Render time spent chart */}
-                    <div className="time-spent-chart-inner">
-                      <div
-                        className="sleep-bar"
-                        style={{ width: `${(healthData.timeSpentData.sleep / 24) * 100}%` }}
-                      ></div>
-                      <div
-                        className="indoor-bar"
-                        style={{ width: `${(healthData.timeSpentData.indoor / 24) * 100}%` }}
-                      ></div>
-                      <div
-                        className="outdoor-bar"
-                        style={{ width: `${(healthData.timeSpentData.outdoor / 24) * 100}%` }}
-                      ></div>
-                    </div>
-                    <div className="chart-labels">
-                      <span>Sleep</span>
-                      <span>Indoor</span>
-                      <span>Outdoor</span>
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
-          )}
+          </div>
+          <div className="time-spent-chart">
+            <h3>Time Spent</h3>
+            <div className="chart-container">
+              {/* Render time spent chart */}
+              <div className="time-spent-chart-inner">
+                <div
+                  className="sleep-bar"
+                  style={{ width: `${(healthData.timeSpentData.sleep / 24) * 100}%` }}
+                ></div>
+                <div
+                  className="indoor-bar"
+                  style={{ width: `${(healthData.timeSpentData.indoor / 24) * 100}%` }}
+                ></div>
+                <div
+                  className="outdoor-bar"
+                  style={{ width: `${(healthData.timeSpentData.outdoor / 24) * 100}%` }}
+                ></div>
+              </div>
+              <div className="chart-labels">
+                <span>Sleep</span>
+                <span>Indoor</span>
+                <span>Outdoor</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       {isWeightModalOpen && (
@@ -198,8 +151,8 @@ function LandingPage({ children }) {
           <button>Save</button>
         </Modal>
       )}
-    </div>
+    </LandingPage>
   );
 }
 
-export default LandingPage;
+export default HealthData;
