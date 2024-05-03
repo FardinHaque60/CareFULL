@@ -27,12 +27,30 @@ class Message(models.Model):
     def __str__(self):
         return self.body
     
-class HealthData(models.Model):
+class Weight_Data(models.Model):
     user = models.ForeignKey('myapi.myUser', on_delete=models.CASCADE)
-    body = models.CharField()
     date = models.DateField()
-    time = models.TimeField()
-    response = models.BooleanField(default=False)
-    prompt = models.BooleanField(default=False)
+    weight = models.IntegerField()
     def __str__(self):
-        return self.body
+        return self.weight
+    
+class Steps_Data(models.Model):
+    user = models.ForeignKey('myapi.myUser', on_delete=models.CASCADE)
+    date = models.DateField()
+    #weight = models.IntegerField()
+    def __str__(self):
+        return #self.weight
+
+class Heart_Data(models.Model):
+    user = models.ForeignKey('myapi.myUser', on_delete=models.CASCADE)
+    date = models.DateField()
+    #weight = models.IntegerField()
+    def __str__(self):
+        return #self.weight
+
+class Time_Data(models.Model):
+    user = models.ForeignKey('myapi.myUser', on_delete=models.CASCADE)
+    date = models.DateField()
+    #weight = models.IntegerField()
+    def __str__(self):
+        return #self.weight

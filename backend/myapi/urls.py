@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import appointments, authentication, chatbot, create_account, landing_page
+from .views import appointments, authentication, chatbot, create_account, landing_page, health_data
 
 urlpatterns = [
 #landing page endpoints:
@@ -19,4 +19,6 @@ urlpatterns = [
     path('get-appointments/', appointments.get_appointments, name='get-appointments'),
     path('edit-appointment/', appointments.edit_appointment, name='edit-appointment'),
     path('delete-appointment/', appointments.delete_appointment, name='delete-appointment'),
+#weight data endpoints:
+    path('add-weight-entry/', health_data.add_weight, name='add-weight'),
 ]

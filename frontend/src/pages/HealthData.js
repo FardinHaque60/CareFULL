@@ -37,10 +37,13 @@ function HealthData() {
     if (modal === 'heart') setHeartModalOpen(false);
   };
 
-  const healthData = {
-    weightChange: '-2.4lbs',
+  const [stepsData, setStepsData] = useState({
     stepsThisWeek: '24,670 steps',
+  });
+  const [heartData, setHeartData] = useState({
     avgHeartRateThisWeek: '72 bpm',
+    heartEntry: '',
+    heartDate: '',
     heartRateData: [
       { month: 'Jan', rate: 75 },
       { month: 'Feb', rate: 78 },
@@ -48,12 +51,38 @@ function HealthData() {
       { month: 'Apr', rate: 72 },
       { month: 'May', rate: 70 },
     ],
-    timeSpentData: {
-      sleep: 8,
-      indoor: 10,
-      outdoor: 6,
-    },
-  };
+  });
+
+  //START weight related data
+  const [weightData, setWeightData] = useState({
+    weightChange: '-2.4lbs',
+    weightEntry: '',
+    weightDate: '',
+  });
+  const handleWeightEntryChange = (event) => {
+    const { name, value } = event.target;
+    setWeightData({...weightData, [name]: value});
+  }
+  const handleWeightEntry = (event) => {
+    event.preventDefault();
+
+    axios.post("http://localhost:8000/api/add-weight-entry/", weightData) 
+      .then(response => {
+        console.log(response.data);
+        setWeightData(response.data);
+        closeModal('weight');
+      })
+      .catch(error => {
+        console.log("backend error occured");
+      })
+  }
+  //END weight related data
+
+  const [timeData, setTimeData] = useState({
+    sleep: 8,
+    indoor: 10,
+    outdoor: 6,
+  });
 
   return (
     <LandingPage>
@@ -64,23 +93,23 @@ function HealthData() {
             <button className="btn btn-primary" onClick={() => openModal('weight')}>+ Weight Data</button>
             <button className="btn btn-primary" onClick={() => openModal('steps')}>+ Steps Data</button>
             <button className="btn btn-primary" onClick={() => openModal('heart')}>+ Heart Data</button>
-            <button className="btn btn-primary" >+ Other Data</button>
+            <button className="btn btn-primary" >+ Time Data</button>
           </div>
         </div>
         <div className="health-data-summary">
           <div>
             <p>Weight Change</p>
-            <p>{healthData.weightChange}</p>
+            <p>{weightData.weightChange}</p>
             <p>Total Change This Week</p>
           </div>
           <div>
             <p>Steps</p>
-            <p>{healthData.stepsThisWeek}</p>
+            <p>{stepsData.stepsThisWeek}</p>
             <p>This Week</p>
           </div>
           <div>
             <p>Heart Rate</p>
-            <p>{healthData.avgHeartRateThisWeek}</p>
+            <p>{heartData.avgHeartRateThisWeek}</p>
             <p>Avg This Week</p>
           </div>
         </div>
@@ -90,7 +119,7 @@ function HealthData() {
             <div className="chart-container">
               {/* Render heart rate chart */}
               <div className="heart-rate-chart">
-                {healthData.heartRateData.map((data) => (
+                {heartData.heartRateData.map((data) => (
                   <div key={data.month} className="chart-bar" style={{ height: `${data.rate}px` }}>
                     <span>{data.month}</span>
                   </div>
@@ -105,15 +134,15 @@ function HealthData() {
               <div className="time-spent-chart-inner">
                 <div
                   className="sleep-bar"
-                  style={{ width: `${(healthData.timeSpentData.sleep / 24) * 100}%` }}
+                  style={{ width: `${(timeData.sleep / 24) * 100}%` }}
                 ></div>
                 <div
                   className="indoor-bar"
-                  style={{ width: `${(healthData.timeSpentData.indoor / 24) * 100}%` }}
+                  style={{ width: `${(timeData.indoor / 24) * 100}%` }}
                 ></div>
                 <div
                   className="outdoor-bar"
-                  style={{ width: `${(healthData.timeSpentData.outdoor / 24) * 100}%` }}
+                  style={{ width: `${(timeData.outdoor / 24) * 100}%` }}
                 ></div>
               </div>
               <div className="chart-labels">
@@ -127,28 +156,49 @@ function HealthData() {
       </div>
       {isWeightModalOpen && (
         <Modal onClose={() => closeModal('weight')}>
-          <h2>Add Weight</h2>
-          <input type="date" />
-          <input type="number" placeholder="Enter weight" />
-          <button>Save</button>
+          <form className="form-group" onSubmit={handleWeightEntry}> 
+              <h2>Add Weight</h2>
+              <input
+                type="date"
+                id="weightDate"
+                name="weightDate"
+                value={weightData.weightDate}
+                onChange={handleWeightEntryChange}
+                required
+              />
+              <input 
+                type="number" 
+                placeholder="Enter weight"
+                id="weightEntry"
+                name="weightEntry"
+                value={weightData.weightEntry}
+                onChange={handleWeightEntryChange}
+                required 
+              />
+              <button className="btn btn-primary" type="submit" >Save</button>
+          </form>
         </Modal>
       )}
 
       {isStepsModalOpen && (
         <Modal onClose={() => closeModal('steps')}>
-          <h2>Add Steps</h2>
-          <input type="date" />
-          <input type="number" placeholder="Enter steps" />
-          <button>Save</button>
+          <div className="form-group">
+            <h2>Add Steps</h2>
+            <input type="date" />
+            <input type="number" placeholder="Enter steps" />
+            <button className="btn btn-primary">Save</button>
+          </div>
         </Modal>
       )}
 
       {isHeartModalOpen && (
         <Modal onClose={() => closeModal('heart')}>
-          <h2>Add Heart Rate</h2>
-          <input type="date" />
-          <input type="number" placeholder="Enter heart rate" />
-          <button>Save</button>
+          <div className="form-group">
+            <h2>Add Heart Rate</h2>
+            <input type="date" name="date" id="date"/>
+            <input type="number" placeholder="Enter heart rate" />
+            <button className="btn btn-primary">Save</button>
+          </div>
         </Modal>
       )}
     </LandingPage>
