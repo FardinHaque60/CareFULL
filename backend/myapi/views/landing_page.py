@@ -11,8 +11,8 @@ def get_user_info(request):
     if not current_user:
         return Response({'error': 'not logged in'}, status=status.HTTP_400_BAD_REQUEST)
     user_info = {
-        'first_name': current_user.first_name,
-        'last_name': current_user.last_name,
+        'firstName': current_user.first_name,
+        'lastName': current_user.last_name,
         'email': current_user.email
     }
     return Response(user_info)
