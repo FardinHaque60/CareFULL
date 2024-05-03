@@ -8,8 +8,8 @@ import time as temp_time # remove later, just used for testing delayed responses
 import backend.llm as llm
 
 print("LOADING DATA - THIS WILL TAKE ABOUT A MINUTE")
-emb_df, emb_np = llm.load_data("./backend/scraped/embeddings.csv")
-lookup = pd.read_csv("./backend/scraped/lookup.csv")
+#emb_df, emb_np = llm.load_data("./backend/scraped/embeddings.csv")
+#lookup = pd.read_csv("./backend/scraped/lookup.csv")
 print("DATA SUCCESSFULL LOADED")
 
 current_user = get_user()
