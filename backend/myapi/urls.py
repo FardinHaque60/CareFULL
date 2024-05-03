@@ -17,4 +17,6 @@ urlpatterns = [
 #appointments endpoints:
     path('save-appointment/', appointments.save_appointment, name='save-appointment'),
     path('get-appointments/', appointments.get_appointments, name='get-appointments'),
+    path('edit-appointment/', appointments.edit_appointment, name='edit-appointment'),
+    path('delete-appointment/', appointments.delete_appointment, name='delete-appointment'),
 ]

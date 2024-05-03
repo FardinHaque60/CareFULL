@@ -11,13 +11,15 @@ def get_appointments(request):
     appointments = Appointment.objects.filter(user=current_user).order_by('-date', '-time')
     user_appointments = []
     for a in appointments:
-        #time is saved as 24 hour time for sorting, convert for display:
+        #time is saved as 24 hour time for sorting, convert for display: 
         converted_time = a.time.strftime("%I:%M %p")
 
         user_appointments.append({
+            'id': a.id,
             'title': a.title,
             'date': a.date,
             'time': converted_time,
+            'data_time': a.time,
             'description': a.description
         })
     return Response(user_appointments)
@@ -37,3 +39,21 @@ def save_appointment(request):
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     return Response({'message': 'appointment created successfully'})
+
+@api_view(['POST'])
+def edit_appointment(request):
+    data = request.data
+    appt = Appointment.objects.get(id=data.get('id'))
+    appt.title = data.get('title')
+    appt.date = data.get('date')
+    appt.time = data.get('time')
+    appt.description = data.get('description')
+    appt.save()
+
+    return Response({'message': 'appointment successfully edited'})
+
+@api_view(['POST'])
+def delete_appointment(request):
+    Appointment.objects.get(id=request.data.get('id')).delete()
+
+    return Response({'message': 'appointment succesfully deleted'})
