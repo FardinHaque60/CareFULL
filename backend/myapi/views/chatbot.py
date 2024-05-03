@@ -2,8 +2,7 @@ from . import api_view, Response, status
 import pandas as pd
 from ..models import Message
 from datetime import datetime
-from .authentication import get_user, get_user_chat_messages, set_user_chat_messages, add_user_chat_message
-import time as temp_time # remove later, just used for testing delayed responses
+from .authentication import get_user, get_user_chat_messages, set_user_chat_messages, add_user_chat_message, trim_messages
 
 import backend.llm as llm
 
@@ -82,8 +81,13 @@ def get_message(request):
     # get and append context document to query
     document = lookup.iloc[df_max_index].item()
     user_prompt += "\nThe following article from WebMD may potentially be relevant to the question, use it if it is appropriate to the user's query.\n" + document
-
-    response = llm.chat(user_prompt, ctx) #, df_max_index
+    invalid_response = True
+    while (invalid_response):
+        try:
+            response = llm.chat(user_prompt, ctx)
+            invalid_response = False
+        except:
+            ctx = trim_messages()
     chat_response_obj = response.choices[0].message
 
     current_datetime = datetime.now()

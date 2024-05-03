@@ -25,6 +25,11 @@ def add_user_chat_message(message):
     global chat_messages
     chat_messages.append(message)
 
+def trim_messages():
+    global chat_messages
+    chat_messages.pop()
+    return chat_messages
+
 @api_view(['POST'])
 def login(request):
     global current_user
