@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import LandingPage from "./LandingPage";
 import './css/Appointments.css';
 import axios from 'axios';
+import Appointment from '../components/Appointment';
 
 function Appointments() {
   const [appointments, setAppointments] = useState([]);
@@ -56,6 +57,30 @@ function Appointments() {
       description: '',
     });
   };
+
+  //methods for handling deleting/ editing
+  const handleDelete = (appointment) => {
+    console.log(appointment.id)
+    axios.post("http://localhost:8000/api/delete-appointment/", appointment)
+      .then(response => {
+        console.log(response.data);
+        fetchData();
+      })
+      .catch(error => {
+        console.log("backend error occured");
+      })
+  }
+
+  const handleSave = (editAppt) => {
+    axios.post("http://localhost:8000/api/edit-appointment/", editAppt)
+      .then(response => {
+        console.log(response.data)
+        fetchData();
+      })
+      .catch(error => {
+        console.log("backend error occured")
+      });
+  }
 
   return (
     <LandingPage>
@@ -114,12 +139,12 @@ function Appointments() {
           <h2>Upcoming Appointments</h2>
           <div className="appointment-items">
             {appointments.map((appointment, index) => (
-              <div key={index} className="appointment-item">
-                <h3>{appointment.title}</h3>
-                <p>Date: {appointment.date}</p>
-                <p>Time: {appointment.time}</p>
-                <p>Description: {appointment.description}</p>
-              </div>
+                <Appointment 
+                  appointment={appointment} 
+                  index={index} 
+                  onDelete={() => handleDelete(appointment)}
+                  onSave={(editAppt) => handleSave(editAppt)}
+                />
             ))}
           </div>
         </div>
