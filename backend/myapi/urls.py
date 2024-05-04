@@ -20,5 +20,6 @@ urlpatterns = [
     path('edit-appointment/', appointments.edit_appointment, name='edit-appointment'),
     path('delete-appointment/', appointments.delete_appointment, name='delete-appointment'),
 #weight data endpoints:
+    path('get-health-data/', health_data.get_health_data, name='get-health-data'),
     path('add-weight-entry/', health_data.add_weight, name='add-weight'),
 ]
