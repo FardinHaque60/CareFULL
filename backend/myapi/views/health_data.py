@@ -34,9 +34,6 @@ def get_health_data(request):
             'Outdoor': 6,
         },
     }
-    #TODO return values in health data based on actual data
-    #remember to return some placeholder like NA if no data, and round decimal values
-
     return Response(health_data)
 
 @api_view(['POST'])
@@ -48,25 +45,11 @@ def add_weight(request):
     try:
         Weight_Data.objects.create(user=current_user, date=date, weight=weight)
     except:
-        return Response("error saving weight entry")
+        return Response("error saving weight entry", status=status.HTTP_400_BAD_REQUEST)
     
-    return Response("succesfully saved weight entry")
+    return Response("successfully saved weight entry", status=status.HTTP_200_OK)
 
-
-@api_view(["POST"])
-def add_steps(request):
-    global current_user
-    current_user = get_user()
-    data = request.data
-    date, steps = data.get("stepsDate"), data.get("stepsNumber")
-    try:
-        Steps_Data.objects.create(user=current_user, date=date, steps=steps)
-    except:
-        return Response("error saving steps entry", status=400)
-    return Response('successfully saved steps entry', status=200)
-
-
-@api_view(["POST"])
+@api_view(['POST'])
 def add_heart(request):
     global current_user
     current_user = get_user()
@@ -75,19 +58,17 @@ def add_heart(request):
     try:
         Heart_Data.objects.create(user=current_user, date=date, heart_rate=heart_rate)
     except:
-        return Response("error saving heart entry", status=400)
-    return Response('successfully saved heart entry', status=200)
+        return Response("error saving heart entry", status=status.HTTP_400_BAD_REQUEST)
+    return Response('successfully saved heart entry', status=status.HTTP_200_OK)
 
-
-@api_view(["POST"])
-def add_time(request):
+@api_view(['POST'])
+def add_steps(request):
     global current_user
     current_user = get_user()
     data = request.data
-    date, entry_type, hours = data.get("date"), data.get("type"), data.get("hours")
+    date, steps = data.get("stepsDate"), data.get("stepsNumber")
     try:
-        Time_Data.objects.create(user=current_user, date=date, entry_type=entry_type, hours=hours)
+        Steps_Data.objects.create(user=current_user, date=date, steps=steps)
     except:
-        return Response("error saving time entry", status=400)
-    return Response('successfully saved time entry', status=200)
-
+        return Response("error saving steps entry", status=status.HTTP_400_BAD_REQUEST)
+    return Response('successfully saved steps entry', status=status.HTTP_200_OK)
