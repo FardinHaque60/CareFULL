@@ -19,7 +19,10 @@ urlpatterns = [
     path('get-appointments/', appointments.get_appointments, name='get-appointments'),
     path('edit-appointment/', appointments.edit_appointment, name='edit-appointment'),
     path('delete-appointment/', appointments.delete_appointment, name='delete-appointment'),
-#weight data endpoints:
+#health data endpoints:
     path('get-health-data/', health_data.get_health_data, name='get-health-data'),
     path('add-weight-entry/', health_data.add_weight, name='add-weight'),
+    path('add-heart-entry/', health_data.add_heart, name='add-heart'),
+    path('add-steps-entry/', health_data.add_steps, name='add-steps'),
+    path('add-time-entry/', health_data.add_time, name='add-time'),
 ]

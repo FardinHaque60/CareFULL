@@ -112,7 +112,7 @@ function HealthData() {
   const handleHeartEntry = (event) => {
     event.preventDefault();
 
-    axios.post("http://localhost:8000/api/add-heart-entry/", healthData) 
+    axios.post("http://localhost:8000/api/add-heart-entry/", heartData) 
       .then(response => {
         console.log(response.data);
         fetchHealthData(); //refreshes health data so it is up to date

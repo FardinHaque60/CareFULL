@@ -13,6 +13,10 @@ def get_health_data(request):
     steps_data = Steps_Data.objects.filter(user=current_user)
     heart_data = Heart_Data.objects.filter(user=current_user)
     time_data = Time_Data.objects.filter(user=current_user)
+    print(weight_data)
+    print(steps_data)
+    print(heart_data)
+    print(time_data)
     health_data = {
         'weightChange': '-2.4lbs',
         'totalSteps': '24,670 steps',
@@ -50,7 +54,7 @@ def add_weight(request):
 
 
 @api_view(["POST"])
-def add_steps_entry(request):
+def add_steps(request):
     global current_user
     current_user = get_user()
     data = request.data
@@ -63,7 +67,7 @@ def add_steps_entry(request):
 
 
 @api_view(["POST"])
-def add_heart_entry(request):
+def add_heart(request):
     global current_user
     current_user = get_user()
     data = request.data
@@ -76,7 +80,7 @@ def add_heart_entry(request):
 
 
 @api_view(["POST"])
-def add_time_entry(request):
+def add_time(request):
     global current_user
     current_user = get_user()
     data = request.data
