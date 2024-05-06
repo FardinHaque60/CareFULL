@@ -47,3 +47,43 @@ def add_weight(request):
         return Response("error saving weight entry")
     
     return Response("succesfully saved weight entry")
+
+
+@api_view(["POST"])
+def add_steps_entry(request):
+    global current_user
+    current_user = get_user()
+    data = request.data
+    date, steps = data.get("stepsDate"), data.get("stepsNumber")
+    try:
+        Steps_Data.objects.create(user=current_user, date=date, steps=steps)
+    except:
+        return Response("error saving steps entry", status=400)
+    return Response('successfully saved steps entry', status=200)
+
+
+@api_view(["POST"])
+def add_heart_entry(request):
+    global current_user
+    current_user = get_user()
+    data = request.data
+    date, heart_rate = data.get("heartDate"), data.get("heartEntry")
+    try:
+        Heart_Data.objects.create(user=current_user, date=date, heart_rate=heart_rate)
+    except:
+        return Response("error saving heart entry", status=400)
+    return Response('successfully saved heart entry', status=200)
+
+
+@api_view(["POST"])
+def add_time_entry(request):
+    global current_user
+    current_user = get_user()
+    data = request.data
+    date, entry_type, hours = data.get("date"), data.get("type"), data.get("hours")
+    try:
+        Time_Data.objects.create(user=current_user, date=date, entry_type=entry_type, hours=hours)
+    except:
+        return Response("error saving time entry", status=400)
+    return Response('successfully saved time entry', status=200)
+

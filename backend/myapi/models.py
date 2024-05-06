@@ -37,20 +37,21 @@ class Weight_Data(models.Model):
 class Steps_Data(models.Model):
     user = models.ForeignKey('myapi.myUser', on_delete=models.CASCADE)
     date = models.DateField()
-    #weight = models.IntegerField()
+    steps = models.IntegerField()
     def __str__(self):
-        return #self.weight
+        return self.steps
 
 class Heart_Data(models.Model):
     user = models.ForeignKey('myapi.myUser', on_delete=models.CASCADE)
     date = models.DateField()
-    #weight = models.IntegerField()
+    heart_rate = models.IntegerField()
     def __str__(self):
-        return #self.weight
+        return self.heart_rate
 
 class Time_Data(models.Model):
     user = models.ForeignKey('myapi.myUser', on_delete=models.CASCADE)
     date = models.DateField()
-    #weight = models.IntegerField()
+    entry_type = models.CharField()
+    hours = models.IntegerField()
     def __str__(self):
-        return #self.weight
+        return self.time
