@@ -72,3 +72,16 @@ def add_steps(request):
     except:
         return Response("error saving steps entry", status=status.HTTP_400_BAD_REQUEST)
     return Response('successfully saved steps entry', status=status.HTTP_200_OK)
+
+
+@api_view(["POST"])
+def add_time(request):
+    global current_user
+    current_user = get_user()
+    data = request.data
+    date, entry_type, hours = data.get("date"), data.get("type"), data.get("hours")
+    try:
+        Time_Data.objects.create(user=current_user, date=date, entry_type=entry_type, hours=hours)
+    except:
+        return Response("error saving time entry", status=status.HTTP_400_BAD_REQUEST)
+    return Response('successfully saved time entry', status=status.HTTP_200_OK)
