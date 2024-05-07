@@ -26,7 +26,6 @@ function HealthData() {
         else console.log(error);
       });
       fetchHealthData();
-      fetchWeightData(); fetchHeartData(); fetchStepsData(); fetchTimeData(); //fetch all table data
   }, []);
 
   const openModal = (modal) => {
@@ -71,6 +70,7 @@ function HealthData() {
       .catch(error => {
         console.log("backend error occured")
       });
+      fetchWeightData(); fetchHeartData(); fetchStepsData(); fetchTimeData(); //fetch all table data
   }
 
   const [allWeightData, setAllWeightData] = useState([]);
@@ -138,11 +138,11 @@ function HealthData() {
       .then(response => {
         console.log(response.data);
         fetchHealthData(); //refreshes health data so it is up to date
-        fetchStepsData(); //refreshes steps table
         setStepsData({
           stepsDate: '',
           stepsNumber: '',
         });
+        setNewSteps(true);
         closeModal('steps');
       })
       .catch(error => {
@@ -169,11 +169,11 @@ function HealthData() {
       .then(response => {
         console.log(response.data);
         fetchHealthData(); //refreshes health data so it is up to date
-        fetchHeartData(); //refreshes heart table
         setHeartData({
           heartEntry: '',
           heartDate: '',
         })
+        setNewBpm(true);
         closeModal('heart');
       })
       .catch(error => {
@@ -199,11 +199,11 @@ function HealthData() {
       .then(response => {
         console.log(response.data);
         fetchHealthData(); //refreshes health data so it is up to date
-        fetchWeightData(); //refreshes weight data
         setWeightData({ 
           weightEntry: '',
           weightDate: '',
         })
+        setNewWeight(true);
         closeModal('weight');
       })
       .catch(error => {
@@ -238,12 +238,12 @@ const handleTimeEntry = (event) => {
       .then(response => {
         console.log(response.data);
         fetchHealthData(); //refreshes health data so it is up to date
-        fetchTimeData(); //refreshes time table
         setTimeData({ 
           date: '',
           type: '',
           hours: '',
         })
+        setNewTime(true);
         closeModal('time');
       })
       .catch(error => {
@@ -252,9 +252,90 @@ const handleTimeEntry = (event) => {
   }
 
 //END time related data
+const handleWeightDelete = (id) => {
+  axios.post('http://localhost:8000/api/delete-health-entry/', {'id': id, 'type': "Weight"})
+    .then(response => {
+      console.log(response.data);
+      fetchHealthData();
+    })
+    .catch(error => {
+      console.log("backend error occured");
+    })
+};
+
+const handleHeartDelete = (id) => {
+  axios.post('http://localhost:8000/api/delete-health-entry/', {'id': id, 'type': "Heart"})
+    .then(response => {
+      console.log(response.data);
+      fetchHealthData();
+    })
+    .catch(error => {
+      console.log("backend error occured");
+    })
+}
+
+const handleStepsDelete = (id) => {
+  axios.post('http://localhost:8000/api/delete-health-entry/', {'id': id, 'type': "Steps"})
+    .then(response => {
+      console.log(response.data);
+      fetchHealthData();
+    })
+    .catch(error => {
+      console.log("backend error occured");
+    })
+}
+
+const handleTimeDelete = (id) => {
+  axios.post('http://localhost:8000/api/delete-health-entry/', {'id': id, 'type': "Time"})
+    .then(response => {
+      console.log(response.data);
+      fetchHealthData();
+    })
+    .catch(error => {
+      console.log("backend error occured");
+    })
+}
+
+const [newWeight, setNewWeight] = useState(false);
+const [newSteps, setNewSteps] = useState(false);
+const [newBpm, setNewBpm] = useState(false);
+const [newTime, setNewTime] = useState(false);
+
   return (
     <LandingPage>
       <div className="health-data-container">
+        {newWeight ? 
+        <div className="alert alert-success">
+          Weight Entry Added Succesfully
+          <button type="button" className="close-btn" onClick={() => setNewWeight(false)}>
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        :
+        newSteps ?
+        <div className="alert alert-success">
+          Steps Entry Added Succesfully
+          <button type="button" className="close-btn" onClick={() => setNewSteps(false)}>
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        : newBpm ?
+        <div className="alert alert-success">
+          Heart Entry Added Succesfully
+          <button type="button" className="close-btn" onClick={() => setNewBpm(false)}>
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        : newTime ?
+        <div className="alert alert-success">
+          Time Entry Added Succesfully
+          <button type="button" className="close-btn" onClick={() => setNewTime(false)}>
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        :
+        null
+        }
         <div className="health-data-header">
           <h2>Your Week at a Glance, {userData.firstName} {userData.lastName}</h2>
           <div className="data-buttons">
@@ -328,7 +409,16 @@ const handleTimeEntry = (event) => {
         </div>
         <div className='table-container'>
           <h3> Your Data Entries </h3>
-          <Table weightData={allWeightData} heartData={allHeartData} stepsData={allStepsData} timeData={allTimeData} /> 
+          <Table 
+            weightData={allWeightData} 
+            heartData={allHeartData} 
+            stepsData={allStepsData} 
+            timeData={allTimeData}
+            weightDelete={(id) => handleWeightDelete(id)}
+            heartDelete={(id) => handleHeartDelete(id)}
+            stepsDelete={(id) => handleStepsDelete(id)}
+            timeDelete={(id) => handleTimeDelete(id)}
+          /> 
         </div>
       </div>
       {isWeightModalOpen && (

@@ -18,9 +18,9 @@ function SideBar() {
 
     return (
         <div className="flex-shrink-0 p-3 shadow d-flex flex-column" style={{ width: '280px', backgroundColor: '#e6e6e7', height: '100vh' }}>
-            <span className="navbar-brand" style={{ color: '#154c79', fontFamily: 'Nunito Sans, sans-serif', fontWeight: 'bold' }}> CareFULL </span>
-            <ul className="mb-auto nav nav-pills flex-column custom-ul" style={{ paddingTop: '100%' }}>
-                <li className="nav-item">
+            <span className="navbar-brand" style={{ color: '#9c2a2a', fontFamily: 'Nunito Sans, sans-serif', fontWeight: 'bold', fontSize: '20px' }}> 🧬 CareFULL </span>
+            <ul className="mb-auto nav flex-column custom-ul" style={{ paddingTop: '100%' }}>
+                <li className="">
                     <Link to="/" className={`text-black nav-link mb-3 ${location.pathname === '/' ? 'active' : ''}`}>
                         🏠 Home
                     </Link>
@@ -41,7 +41,7 @@ function SideBar() {
                     </Link>
                 </li>
             </ul>
-            <Link to='/login' className='text-black nav-link' onClick={logout}> Logout </Link>
+            <Link to='/login' className='text-black nav-link' onClick={logout}> Logout →</Link>
         </div>
     );
 }
