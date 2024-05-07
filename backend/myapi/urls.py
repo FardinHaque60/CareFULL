@@ -24,5 +24,9 @@ urlpatterns = [
     path('add-weight-entry/', health_data.add_weight, name='add-weight'),
     path('add-steps-entry/', health_data.add_steps, name='add-steps'),
     path('add-heart-entry/', health_data.add_heart, name='add-heart'),
-    path('add-time-entry/', health_data.add_time, name='add-time'),  # Keep this entry if needed
+    path('add-time-entry/', health_data.add_time, name='add-time'), 
+    path('get-heart-data/', health_data.get_heart_data, name='get-heart-data'),
+    path('get-weight-data/', health_data.get_weight_data, name='get-weight-data'),
+    path('get-steps-data/', health_data.get_steps_data, name='get-steps-data'),
+    path('get-time-data/', health_data.get_time_data, name='get-time-data'),
 ]
