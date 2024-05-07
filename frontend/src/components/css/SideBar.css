@@ -1,0 +1,25 @@
+/* Define styles for the active link */
+.active {
+    position: relative;
+}
+
+.active::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 2px;
+    background-color: #646467; /* Change to your preferred color */
+    animation: slide-in 0.5s ease-out forwards;
+}
+
+/* Define animation */
+@keyframes slide-in {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}

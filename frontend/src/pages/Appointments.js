@@ -58,6 +58,8 @@ function Appointments() {
     });
   };
 
+  const [deleteStatus, setDeleteStatus] = useState(false);
+  const [editStatus, setEditStatus] = useState(false);
   //methods for handling deleting/ editing
   const handleDelete = (appointment) => {
     console.log(appointment.id)
@@ -65,6 +67,7 @@ function Appointments() {
       .then(response => {
         console.log(response.data);
         fetchData();
+        setDeleteStatus(true);
       })
       .catch(error => {
         console.log("backend error occured");
@@ -76,6 +79,7 @@ function Appointments() {
       .then(response => {
         console.log(response.data)
         fetchData();
+        setEditStatus(true);
       })
       .catch(error => {
         console.log("backend error occured")
@@ -130,13 +134,44 @@ function Appointments() {
                 onChange={handleInputChange}
               ></textarea>
             </div>
-            {saveStatus === "success" && <div className="alert alert-success">Appointment Saved Succesfully</div>}
-            {saveStatus === "fail" && <div className="alert alert-danger">Could not save Appointment</div>}
+            {saveStatus === "success" && 
+            <div className="alert alert-success">
+              Appointment Saved Succesfully
+              <button type="button" className="close-btn" onClick={() => setStatus(null)}>
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            }
+            {saveStatus === "fail" && 
+            <div className="alert alert-danger">
+              Could not save Appointment
+              <button type="button" className="close-btn" onClick={() => setStatus(null)}>
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>}
             <button type="submit">Add Appointment</button>
           </form>
         </div>
         <div className="appointments-list">
           <h2>Upcoming Appointments</h2>
+          {editStatus ? 
+          <div className="alert alert-success">
+            Appointment Edited Succesfully
+            <button type="button" className="close-btn" onClick={() => setEditStatus(false)}>
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          : 
+          deleteStatus ?
+          <div className="alert alert-success">
+            Appointment Deleted Succesfully
+            <button type="button" className="close-btn" onClick={() => setDeleteStatus(false)}>
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          :
+          null
+          }
           <div className="appointment-items">
             {appointments.map((appointment, index) => (
                 <Appointment 

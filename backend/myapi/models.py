@@ -7,7 +7,6 @@ class myUser(AbstractUser):
     groups = models.ManyToManyField(Group, related_name='myuser_set')
     user_permissions = models.ManyToManyField(Permission, related_name='myuser_set')
 
-# test model to see if db is working
 class Appointment(models.Model):
     user = models.ForeignKey('myapi.myUser', on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
@@ -27,12 +26,31 @@ class Message(models.Model):
     def __str__(self):
         return self.body
     
-class HealthData(models.Model):
+class Weight_Data(models.Model):
     user = models.ForeignKey('myapi.myUser', on_delete=models.CASCADE)
-    body = models.CharField()
     date = models.DateField()
-    time = models.TimeField()
-    response = models.BooleanField(default=False)
-    prompt = models.BooleanField(default=False)
+    weight = models.IntegerField(default=0)
     def __str__(self):
-        return self.body
+        return str(self.weight)
+    
+class Steps_Data(models.Model):
+    user = models.ForeignKey('myapi.myUser', on_delete=models.CASCADE)
+    date = models.DateField()
+    steps = models.IntegerField(default=0)
+    def __str__(self):
+        return str(self.steps)
+
+class Heart_Data(models.Model):
+    user = models.ForeignKey('myapi.myUser', on_delete=models.CASCADE)
+    date = models.DateField()
+    heart_rate = models.IntegerField(default=0)
+    def __str__(self):
+        return str(self.heart_rate)
+
+class Time_Data(models.Model):
+    user = models.ForeignKey('myapi.myUser', on_delete=models.CASCADE)
+    date = models.DateField()
+    entry_type = models.CharField(default="NA")
+    hours = models.IntegerField(default=0)
+    def __str__(self):
+        return str(self.hours)

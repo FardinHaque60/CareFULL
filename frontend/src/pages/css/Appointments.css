@@ -1,6 +1,7 @@
 .appointments-container {
     display: flex;
     flex-direction: row;
+    padding: 20px;
   }
   
   .form-container {
@@ -110,4 +111,14 @@
   
   .options .btn {
     margin-left: 10px;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
   }

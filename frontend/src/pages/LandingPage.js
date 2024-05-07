@@ -31,13 +31,14 @@ function LandingPage({children}) {
 
   return (
     <div>
-      {/* top navbar */}
+      {/* top navbar
       <nav className="shadow-sm navbar navbar-light" style={{ backgroundColor: '#e6e6e7'}}>
       <div className="container-fluid">
         <span className="navbar-brand" style={{color: '#154c79', fontFamily: 'Nunito Sans, sans-serif', fontWeight: 'bold' }}> CareFULL </span>
         <Link to='/login' className='text-black nav-link' onClick={logout}> Logout </Link>
       </div>
       </nav>
+      */}
 
       <div style={{ display: 'flex' }}>
         {/* side navbar */}
