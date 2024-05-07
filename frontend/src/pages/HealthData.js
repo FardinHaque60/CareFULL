@@ -4,6 +4,7 @@ import axios from 'axios';
 import './css/HealthData.css';
 import Modal from '../components/Modal.js';
 import LandingPage from './LandingPage.js';
+import Table from "../components/Table.js";
 
 function HealthData() {
   const [userData, setUserData] = useState({});
@@ -25,7 +26,7 @@ function HealthData() {
         else console.log(error);
       });
       fetchHealthData();
-      
+      fetchWeightData(); fetchHeartData(); fetchStepsData(); fetchTimeData(); //fetch all table data
   }, []);
 
   const openModal = (modal) => {
@@ -59,14 +60,61 @@ function HealthData() {
             'Sleep': 8,
             'Indoor': 10,
             'Outdoor': 6,
-        },
-  })
+        },})
 
   const fetchHealthData = () => {
     axios.get("http://localhost:8000/api/get-health-data/")
       .then(response => {
         console.log(response.data);
         setHealthData(response.data);
+      })
+      .catch(error => {
+        console.log("backend error occured")
+      });
+  }
+
+  const [allWeightData, setAllWeightData] = useState([]);
+  const fetchWeightData = () => {
+    axios.get("http://localhost:8000/api/get-weight-data/")
+      .then(response => {
+        console.log(response.data);
+        setAllWeightData(response.data);
+      })
+      .catch(error => {
+        console.log("backend error occured")
+      });
+  }
+
+  const [allHeartData, setAllHeartData] = useState([]);
+  const fetchHeartData = () => {
+    axios.get("http://localhost:8000/api/get-heart-data/")
+      .then(response => {
+        console.log(response.data);
+        setAllHeartData(response.data);
+      })
+      .catch(error => {
+        console.log("backend error occured")
+      });
+  }
+
+  const [allStepsData, setAllStepsData] = useState([]);
+  const fetchStepsData = () => {
+    axios.get("http://localhost:8000/api/get-steps-data/")
+      .then(response => {
+        console.log(response.data);
+        setAllStepsData(response.data);
+      })
+      .catch(error => {
+        console.log("backend error occured")
+      });
+  }
+
+  const [allTimeData, setAllTimeData] = useState([]);
+  const fetchTimeData = () => {
+    axios.get("http://localhost:8000/api/get-time-data/")
+      .then(response => {
+        console.log(response.data);
+        setAllTimeData(response.data);
       })
       .catch(error => {
         console.log("backend error occured")
@@ -90,6 +138,11 @@ function HealthData() {
       .then(response => {
         console.log(response.data);
         fetchHealthData(); //refreshes health data so it is up to date
+        fetchStepsData(); //refreshes steps table
+        setStepsData({
+          stepsDate: '',
+          stepsNumber: '',
+        });
         closeModal('steps');
       })
       .catch(error => {
@@ -116,6 +169,11 @@ function HealthData() {
       .then(response => {
         console.log(response.data);
         fetchHealthData(); //refreshes health data so it is up to date
+        fetchHeartData(); //refreshes heart table
+        setHeartData({
+          heartEntry: '',
+          heartDate: '',
+        })
         closeModal('heart');
       })
       .catch(error => {
@@ -141,6 +199,11 @@ function HealthData() {
       .then(response => {
         console.log(response.data);
         fetchHealthData(); //refreshes health data so it is up to date
+        fetchWeightData(); //refreshes weight data
+        setWeightData({ 
+          weightEntry: '',
+          weightDate: '',
+        })
         closeModal('weight');
       })
       .catch(error => {
@@ -175,6 +238,12 @@ const handleTimeEntry = (event) => {
       .then(response => {
         console.log(response.data);
         fetchHealthData(); //refreshes health data so it is up to date
+        fetchTimeData(); //refreshes time table
+        setTimeData({ 
+          date: '',
+          type: '',
+          hours: '',
+        })
         closeModal('time');
       })
       .catch(error => {
@@ -187,7 +256,7 @@ const handleTimeEntry = (event) => {
     <LandingPage>
       <div className="health-data-container">
         <div className="health-data-header">
-          <h2>Your Day at a Glance, {userData.firstName} {userData.lastName}</h2>
+          <h2>Your Week at a Glance, {userData.firstName} {userData.lastName}</h2>
           <div className="data-buttons">
             <button className="btn btn-primary" onClick={() => openModal('weight')}>+ Weight Data</button>
             <button className="btn btn-primary" onClick={() => openModal('steps')}>+ Steps Data</button>
@@ -214,9 +283,10 @@ const handleTimeEntry = (event) => {
         </div>
         <div className="health-data-charts">
           <div className="heart-health-chart">
-            <h3>Heart Health</h3>
+            <h3>Heart Health This Past Year</h3>
             <div className="chart-container">
               {/* Render heart rate chart */}
+              {healthData.allHeartData.length > 0 ? 
               <div className="heart-rate-chart">
                 {healthData.allHeartData.map((data) => (
                   <div key={data.month} className="chart-bar" style={{ height: `${data.rate}px` }}>
@@ -224,34 +294,41 @@ const handleTimeEntry = (event) => {
                   </div>
                 ))}
               </div>
+              :
+              <div> <span> No data yet </span> </div>
+              }
             </div>
           </div>
           <div className="time-spent-chart">
-            <h3>Time Spent</h3>
+            <h3>Time Spent This Week</h3>
             <div className="chart-container">
               {/* Render time spent chart */}
               <div className="time-spent-chart-inner">
                 <div
                   className="sleep-bar"
-                  style={{ width: `${(healthData.timeData.Sleep / 24) * 100}%` }}
+                  style={{ width: `${(healthData.timeData.Sleep / 168) * 100}%` }}
                 ></div>
                 <div
                   className="indoor-bar"
-                  style={{ width: `${(healthData.timeData.Indoor / 24) * 100}%` }}
+                  style={{ width: `${(healthData.timeData.Indoor / 168) * 100}%` }}
                 ></div>
                 <div
                   className="outdoor-bar"
-                  style={{ width: `${(healthData.timeData.Outdoor / 24) * 100}%` }}
+                  style={{ width: `${(healthData.timeData.Outdoor / 168) * 100}%` }}
                 ></div>
               </div>
               
               <div className="chart-labels">
-                <span>Sleep</span>
-                <span>Indoor</span>
-                <span>Outdoor</span>
+                <span>Sleep [Gray]</span>
+                <span>Indoor [Blue]</span>
+                <span>Outdoor [Green]</span>
               </div>
             </div>
           </div>
+        </div>
+        <div className='table-container'>
+          <h3> Your Data Entries </h3>
+          <Table weightData={allWeightData} heartData={allHeartData} stepsData={allStepsData} timeData={allTimeData} /> 
         </div>
       </div>
       {isWeightModalOpen && (
@@ -334,7 +411,7 @@ const handleTimeEntry = (event) => {
                   placeholder="Enter Heart Rate in bpm"
                   id="heartEntry"
                   name="heartEntry"
-                  value={healthData.heartEntry}
+                  value={heartData.heartEntry}
                   onChange={handleHeartEntryChange}
                   required 
                 />
