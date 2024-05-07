@@ -47,12 +47,12 @@ def save_appointment(request):
                  "Name: " + title + "\n" +
                  "Date: " + date + "\n" +
                  "Time: " + converted_time + "\n"
-                 , time)
+                )
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     return Response({'message': 'appointment created successfully'})
 
-def send_sms(message, time):
+def send_sms(message):
     client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
 
     message = client.messages.create(
