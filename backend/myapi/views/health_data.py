@@ -73,7 +73,6 @@ def get_health_data(request):
             visited_months.add(month)
             bpm_entries.append(entry)
     health_data['allHeartData'] = bpm_entries
-    print(bpm_entries)
 
     # time data formatting
     times = {
@@ -107,10 +106,10 @@ def get_weight_data(request):
     weight_data = []
     for w in Weight_Data.objects.filter(user=current_user).order_by('-date'):
         entry = {}
+        entry['id'] = w.id
         entry['date'] = w.date
         entry['weightEntry'] = w.weight
         weight_data.append(entry)
-
     return Response(weight_data)
 
 @api_view(['POST'])
@@ -132,6 +131,7 @@ def get_heart_data(request):
     heart_data = []
     for w in Heart_Data.objects.filter(user=current_user).order_by('-date'):
         entry = {}
+        entry['id'] = w.id
         entry['date'] = w.date
         entry['heartEntry'] = w.heart_rate
         heart_data.append(entry)
@@ -157,6 +157,7 @@ def get_steps_data(request):
     steps_data = []
     for w in Steps_Data.objects.filter(user=current_user).order_by('-date'):
         entry = {}
+        entry['id'] = w.id
         entry['date'] = w.date
         entry['stepsEntry'] = w.steps
         steps_data.append(entry)
@@ -182,9 +183,29 @@ def get_time_data(request):
     time_data = []
     for w in Time_Data.objects.filter(user=current_user).order_by("-date"):
         entry = {}
+        entry['id'] = w.id
         entry['date'] = w.date
         entry['timeType'] = w.entry_type
         entry['timeEntry'] = w.hours
         time_data.append(entry)
 
     return Response(time_data)
+
+@api_view(['POST'])
+def delete_health_entry(request):
+    global current_user
+    current_user = get_user()
+    table = request.data.get('type')
+    id = request.data.get('id')
+    objects = Weight_Data.objects
+    match table:   
+        case "Steps":
+            objects = Steps_Data.objects
+        case "Heart":
+            objects = Heart_Data.objects
+        case "Time":
+            objects = Time_Data.objects
+    entry = objects.filter(user=current_user, id=id)
+    entry.delete()
+    
+    return Response("deleted health entry")

@@ -29,4 +29,5 @@ urlpatterns = [
     path('get-weight-data/', health_data.get_weight_data, name='get-weight-data'),
     path('get-steps-data/', health_data.get_steps_data, name='get-steps-data'),
     path('get-time-data/', health_data.get_time_data, name='get-time-data'),
+    path('delete-health-entry/', health_data.delete_health_entry, name='delete-health-entry'),
 ]
