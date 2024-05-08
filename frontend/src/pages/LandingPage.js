@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import './css/LandingPage.css';
 import SideBar from '../components/Sidebar';
+import HealthImage from '../medicalImage.webp';
 
 function LandingPage({children}) {
   const [userData, setUserData] = useState({});
@@ -41,13 +42,58 @@ function LandingPage({children}) {
       */}
 
       <div style={{ display: 'flex' }}>
-        {/* side navbar */}
         <SideBar />
 
-        {/* main code under here */}
-        <div className="main-content">
-          {children || <h1>Welcome to CareFULL, {userData.firstName} {userData.lastName}</h1>}
+        <div className="main-content" style={{
+            flex: 1,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+          }}>
+          {children || <MainPage/>}
         </div>
+      </div>
+    </div>
+  );
+}
+
+function MainPage() {
+  return (
+    <div className="main-content" style={{
+      flex: 1,
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: '20px',
+    }}>
+      <div style={{ flex: 1, marginRight: '20px' }}>
+        <ul style={{
+          listStyleType: 'disc',
+          paddingLeft: '20px',
+          fontFamily: 'Arial',
+          fontSize: '16px'
+        }}>
+          <li>
+            <Link to="/health-data" style={{ textDecoration: 'underline', color: 'blue' }}>
+              📊 Access your Health Data Here
+            </Link>
+          </li>
+          <li>
+            <Link to="/appointments" style={{ textDecoration: 'underline', color: 'blue' }}>
+              🗓️ Create or View your Appointments Here
+            </Link>
+          </li>
+          <li>
+            <Link to="/chatbot" style={{ textDecoration: 'underline', color: 'blue' }}>
+              🤖 Find or Chat with AI for Directed Health Support Here
+            </Link>
+          </li>
+        </ul>
+      </div>
+
+      <div style={{ flex: 1, textAlign: 'right' }}>
+        <img src={HealthImage} alt="Health Graphic" style={{ width: '80%', maxWidth: '500px' }} />
       </div>
     </div>
   );
