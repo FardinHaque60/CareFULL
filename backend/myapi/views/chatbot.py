@@ -62,7 +62,6 @@ def get_message(request):
     # chatbot generated response implementation below 
     ctx = get_user_chat_messages()
 
-    # TODO handle df_index
     # df_max_index should be -1 if it is the first message in a chat.
     # otherwise, df_max_index should be the passed so that the same context is used
     # for all subsequent messages in a chat
