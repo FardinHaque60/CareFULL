@@ -161,17 +161,15 @@ function Appointments() {
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          : 
-          deleteStatus ?
+          : null }
+          {deleteStatus ?
           <div className="alert alert-success">
             Appointment Deleted Succesfully
             <button type="button" className="close-btn" onClick={() => setDeleteStatus(false)}>
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          :
-          null
-          }
+          : null }
           <div className="appointment-items">
             {appointments.map((appointment, index) => (
                 <Appointment 
