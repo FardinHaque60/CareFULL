@@ -20,80 +20,68 @@ function LandingPage({children}) {
       });
   }, []);
 
-  const logout = (e) => {
-    axios.post('http://localhost:8000/api/logout/')
-      .then(response => {
-        console.log(response.data)
-      })
-      .catch(error => {
-        console.log(error.response.data)
-      })
-  }
-
   return (
     <div>
-      {/* top navbar
-      <nav className="shadow-sm navbar navbar-light" style={{ backgroundColor: '#e6e6e7'}}>
-      <div className="container-fluid">
-        <span className="navbar-brand" style={{color: '#154c79', fontFamily: 'Nunito Sans, sans-serif', fontWeight: 'bold' }}> CareFULL </span>
-        <Link to='/login' className='text-black nav-link' onClick={logout}> Logout </Link>
-      </div>
-      </nav>
-      */}
-
       <div style={{ display: 'flex' }}>
         <SideBar />
 
-        <div className="main-content" style={{
-            flex: 1,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '100vh',
-          }}>
-          {children || <MainPage/>}
+        <div className="main-content">
+          {children || <MainPage userData={userData}/>}
         </div>
       </div>
     </div>
   );
 }
 
-function MainPage() {
+function MainPage({userData}) {
   return (
-    <div className="main-content" style={{
-      flex: 1,
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      padding: '20px',
-    }}>
-      <div style={{ flex: 1, marginRight: '20px' }}>
-        <ul style={{
-          listStyleType: 'disc',
-          paddingLeft: '20px',
-          fontFamily: 'Arial',
-          fontSize: '16px'
-        }}>
-          <li>
-            <Link to="/health-data" style={{ textDecoration: 'underline', color: 'blue' }}>
-              📊 Access your Health Data Here
-            </Link>
-          </li>
-          <li>
-            <Link to="/appointments" style={{ textDecoration: 'underline', color: 'blue' }}>
-              🗓️ Create or View your Appointments Here
-            </Link>
-          </li>
-          <li>
-            <Link to="/chatbot" style={{ textDecoration: 'underline', color: 'blue' }}>
-              🤖 Find or Chat with AI for Directed Health Support Here
-            </Link>
-          </li>
-        </ul>
+    <div style={{ 
+        flexDirection: 'column', 
+        width: '100%',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '2%',
+        marginTop: '5%',
+      }}>
+      <div>  
+          <h1> Welcome to CareFULL, {userData.firstName} {userData.lastName} </h1>
       </div>
+      <div className="main-content" style={{
+        flex: 1,
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '20px',
+      }}>
+        
+        <div style={{ flex: 1, marginRight: '20px' }}>
+          <ul style={{
+            listStyleType: 'disc',
+            paddingLeft: '40px',
+            fontFamily: 'Arial',
+            fontSize: '20px',
+          }}>
+            <li style={{ marginBottom: '50px' }}>
+              <Link to="/health-data" style={{ textDecoration: 'underline', color: 'blue'}}>
+                📊 Access your Health Data Here
+              </Link>
+            </li>
+            <li style={{ marginBottom: '50px' }}>
+              <Link to="/appointments" style={{ textDecoration: 'underline', color: 'blue'}}>
+                🗓️ Create or View your Appointments Here
+              </Link>
+            </li>
+            <li>
+              <Link to="/chatbot" style={{ textDecoration: 'underline', color: 'blue' }}>
+                🤖 Find or Chat with AI for Directed Health Support Here
+              </Link>
+            </li>
+          </ul>
+        </div>
 
-      <div style={{ flex: 1, textAlign: 'right' }}>
-        <img src={HealthImage} alt="Health Graphic" style={{ width: '80%', maxWidth: '500px' }} />
+        <div style={{ flex: 1, textAlign: 'right', paddingRight: '4.5%' }}>
+          <img src={HealthImage} alt="Health Graphic" style={{ width: '80%', maxWidth: '500px' }} />
+        </div>
       </div>
     </div>
   );
