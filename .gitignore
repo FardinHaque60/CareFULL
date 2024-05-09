@@ -15,6 +15,7 @@ backend/venv
 /backend/backend/__pycache__/
 /backend/myapi/__pycache__/
 /backend/myapi/migrations/__pycache__/
+/backend/myapi/migrations/
 /backend/myapi/views/__pycache__
 
 # dependencies
