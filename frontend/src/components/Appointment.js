@@ -39,47 +39,75 @@ const Appointment = ({ appointment, index, onDelete, onSave }) => {
   }
 
   return (
-        <div key={index} className="appointment-item">
-            <div> 
-                {!expanded ?
-                <>
-                <h3>{appointment.title}</h3>
-                <p>Date: {appointment.date}</p>
-                <p>Time: {appointment.time}</p>
-                <p>Description: {appointment.description}</p>
-                </>
-                : (
-                <div style={{ marginTop: '10px'}}>
-                    <Form.Group>
-                    <Form.Label>Title</Form.Label>
-                    <Form.Control type="text" value={currAppt.title}  name="title" onChange={handleEditChange} />
-                    </Form.Group>
-                    <Form.Group>
-                    <Form.Label>Date</Form.Label>
-                    <Form.Control type="date" value={currAppt.date} name="date"  onChange={handleEditChange} />
-                    </Form.Group>
-                    <Form.Group>
-                    <Form.Label>Time</Form.Label>
-                    <Form.Control type="time" value={currAppt.time} name="time" onChange={handleEditChange} />
-                    </Form.Group>
-                    <Form.Group>
-                    <Form.Label>Description</Form.Label>
-                    <Form.Control as="textarea" rows={3} value={currAppt.description} name="description" onChange={handleEditChange} />
-                    </Form.Group>
-                    <Form.Group className="text-center" style={{ paddingTop: '10px' }}> {/* Centering the Save button */}
-                    <Button variant="primary" onClick={handleSubmit} >Save</Button>
-                    </Form.Group>
-                </div>
-                )}
-                <div className='options'>  
-                {!expanded ? 
-                    <span className='btn btn-primary' onClick={toggleExpand}> Edit </span>
-                : <span className='btn btn-primary' onClick={toggleExpand}> Cancel </span>
-                }
-                <span className='btn btn-danger' onClick={onDelete}> Delete </span>
-                </div>
-            </div>
+      <div key={index} className="appointment-item">
+        <div> 
+          {!expanded ?
+          <>
+          <h3>{appointment.title}</h3>
+          <p>Date: {appointment.date}</p>
+          <p>Time: {appointment.time}</p>
+          <p>Description: {appointment.description}</p>
+          </>
+          : (
+          <div style={{ marginTop: '10px'}}>
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label htmlFor="title">Title:</label>
+                <input
+                  type="text"
+                  id="title"
+                  name="title"
+                  value={currAppt.title}
+                  onChange={handleEditChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="date">Date:</label>
+                <input
+                  type="date"
+                  id="date"
+                  name="date"
+                  value={currAppt.date}
+                  onChange={handleEditChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="time">Time:</label>
+                <input
+                  type="time"
+                  id="time"
+                  name="time"
+                  value={currAppt.time}
+                  onChange={handleEditChange}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="description">Description:</label>
+                <textarea
+                  id="description"
+                  name="description"
+                  value={currAppt.description}
+                  onChange={handleEditChange}
+                ></textarea>
+              </div>
+              <div className='text-center'>
+                <button type="submit">Save</button> 
+              </div>
+            </form>
+          </div>
+          )}
+          <div className='options'>  
+            {!expanded ? 
+                <span className='btn btn-primary' onClick={toggleExpand}> Edit </span>
+            : <span className='btn btn-primary' onClick={toggleExpand}> Cancel </span>
+            }
+            <span className='btn btn-danger' onClick={onDelete}> Delete </span>
+          </div>
         </div>
+      </div>
     )
 }
 

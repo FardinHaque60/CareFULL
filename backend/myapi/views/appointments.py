@@ -1,6 +1,9 @@
 from . import api_view, Response, status
 from .authentication import get_user
 from ..models import Appointment
+from django.conf import settings
+from django.core.mail import send_mail
+from datetime import datetime
 
 current_user = get_user()
 
@@ -30,12 +33,22 @@ def save_appointment(request):
     current_user = get_user()
     data = request.data
     title, date, time, description = data.get('title'), data.get('date'), data.get('time'), data.get('description')
+    time_obj = datetime.strptime(time, '%H:%M')
+    converted_time = time_obj.strftime("%I:%M %p")
 
     if not (title and date and time):
         return Response({'error': 'invalid fields'}, status=status.HTTP_400_BAD_REQUEST)
     try:
         appointment = Appointment.objects.create(user=current_user, title=title, date=date, time=time, description=description)
         appointment.save()
+        subject = "Your Upcoming Appointment Information from CareFULL"
+        message = ("Heres the details for your upcoming appointment: \n" +
+                 "Name: " + title + "\n" +
+                 "Date: " + date + "\n" +
+                 "Time: " + converted_time + "\n")
+        email_from = settings.EMAIL_HOST_USER
+        recipient = [current_user.email]
+        send_mail(subject, message, email_from, recipient)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     return Response({'message': 'appointment created successfully'})
