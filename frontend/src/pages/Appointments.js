@@ -111,6 +111,7 @@ function Appointments() {
                 name="date"
                 value={newAppointment.date}
                 onChange={handleInputChange}
+                min={new Date().toISOString().substring(0, 10)} 
                 required
               />
             </div>

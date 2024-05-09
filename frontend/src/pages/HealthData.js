@@ -432,6 +432,7 @@ const [newTime, setNewTime] = useState(false);
                   name="weightDate"
                   value={weightData.weightDate}
                   onChange={handleWeightEntryChange}
+                  max={new Date().toISOString().substring(0, 10)} 
                   required
                 />
               </div>
@@ -443,6 +444,7 @@ const [newTime, setNewTime] = useState(false);
                   name="weightEntry"
                   value={weightData.weightEntry}
                   onChange={handleWeightEntryChange}
+                  min={0}
                   required 
                 />
               </div>
@@ -462,6 +464,7 @@ const [newTime, setNewTime] = useState(false);
                   name="stepsDate"
                   value={stepsData.stepsDate}
                   onChange={handleStepsEntryChange}
+                  max={new Date().toISOString().substring(0, 10)} 
                   required
                 />
               </div>
@@ -473,6 +476,7 @@ const [newTime, setNewTime] = useState(false);
                   name="stepsNumber"
                   value={stepsData.stepsNumber}
                   onChange={handleStepsEntryChange}
+                  min={0}
                   required 
                 />
               </div>
@@ -492,6 +496,7 @@ const [newTime, setNewTime] = useState(false);
                   name="heartDate"
                   value={heartData.heartDate}
                   onChange={handleHeartEntryChange}
+                  max={new Date().toISOString().substring(0, 10)} 
                   required
                 />
               </div>
@@ -503,6 +508,7 @@ const [newTime, setNewTime] = useState(false);
                   name="heartEntry"
                   value={heartData.heartEntry}
                   onChange={handleHeartEntryChange}
+                  min={0}
                   required 
                 />
               </div>
@@ -523,6 +529,7 @@ const [newTime, setNewTime] = useState(false);
                   name="date"
                   value={timeData.date}
                   onChange={handleTimeEntryChange}
+                  max={new Date().toISOString().substring(0, 10)} 
                   required
                 />
               </div>
@@ -546,6 +553,7 @@ const [newTime, setNewTime] = useState(false);
                   name="hours"
                   value={timeData.hours}
                   onChange={handleTimeEntryChange}
+                  min={0}
                   required 
                 />
               </div>
