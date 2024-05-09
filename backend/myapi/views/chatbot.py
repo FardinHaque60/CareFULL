@@ -7,8 +7,8 @@ from .authentication import get_user, get_user_chat_messages, set_user_chat_mess
 import backend.llm as llm
 
 print("LOADING DATA - THIS WILL TAKE ABOUT A MINUTE")
-#emb_df, emb_np = llm.load_data("./backend/scraped/embeddings.csv")
-#lookup = pd.read_csv("./backend/scraped/lookup.csv")
+emb_df, emb_np = llm.load_data("./backend/scraped/embeddings.csv")
+lookup = pd.read_csv("./backend/scraped/lookup.csv")
 print("DATA SUCCESSFULL LOADED")
 
 current_user = get_user()
@@ -83,7 +83,10 @@ def get_message(request):
     invalid_response = True
     while (invalid_response):
         try:
-            response = llm.chat(user_prompt, ctx)
+            if "depth" in user_prompt:
+                response = llm.chat(user_prompt, ctx)
+            else:
+                response = llm.chat(user_prompt + 'answer in less than a few words', ctx)
             invalid_response = False
         except:
             ctx = trim_messages()

@@ -23,7 +23,8 @@ def chat(prompt: str, ctx: Iterable[ChatCompletionMessageParam]) -> ChatCompleti
 
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
-        messages=messages
+        messages=messages,
+        temperature=0.1,
     )
 
     return response
