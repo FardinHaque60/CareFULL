@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import './css/LandingPage.css';
 import SideBar from '../components/Sidebar';
+import HealthImage from '../medicalImage.webp';
 
 function LandingPage({children}) {
   const [userData, setUserData] = useState({});
@@ -19,34 +20,67 @@ function LandingPage({children}) {
       });
   }, []);
 
-  const logout = (e) => {
-    axios.post('http://localhost:8000/api/logout/')
-      .then(response => {
-        console.log(response.data)
-      })
-      .catch(error => {
-        console.log(error.response.data)
-      })
-  }
-
   return (
     <div>
-      {/* top navbar
-      <nav className="shadow-sm navbar navbar-light" style={{ backgroundColor: '#e6e6e7'}}>
-      <div className="container-fluid">
-        <span className="navbar-brand" style={{color: '#154c79', fontFamily: 'Nunito Sans, sans-serif', fontWeight: 'bold' }}> CareFULL </span>
-        <Link to='/login' className='text-black nav-link' onClick={logout}> Logout </Link>
-      </div>
-      </nav>
-      */}
-
       <div style={{ display: 'flex' }}>
-        {/* side navbar */}
         <SideBar />
 
-        {/* main code under here */}
         <div className="main-content">
-          {children || <h1>Welcome to CareFULL, {userData.firstName} {userData.lastName}</h1>}
+          {children || <MainPage userData={userData}/>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MainPage({userData}) {
+  return (
+    <div style={{ 
+        flexDirection: 'column', 
+        width: '100%',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '2%',
+        marginTop: '5%',
+      }}>
+      <div>  
+          <h1> Welcome to CareFULL, {userData.firstName} {userData.lastName} </h1>
+      </div>
+      <div className="main-content" style={{
+        flex: 1,
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '20px',
+      }}>
+        
+        <div style={{ flex: 1, marginRight: '20px' }}>
+          <ul style={{
+            listStyleType: 'disc',
+            paddingLeft: '40px',
+            fontFamily: 'Arial',
+            fontSize: '20px',
+          }}>
+            <li style={{ marginBottom: '50px' }}>
+              <Link to="/health-data" style={{ textDecoration: 'underline', color: 'blue'}}>
+                📊 Access your Health Data Here
+              </Link>
+            </li>
+            <li style={{ marginBottom: '50px' }}>
+              <Link to="/appointments" style={{ textDecoration: 'underline', color: 'blue'}}>
+                🗓️ Create or View your Appointments Here
+              </Link>
+            </li>
+            <li>
+              <Link to="/chatbot" style={{ textDecoration: 'underline', color: 'blue' }}>
+                🤖 Find or Chat with AI for Directed Health Support Here
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        <div style={{ flex: 1, textAlign: 'right', paddingRight: '4.5%' }}>
+          <img src={HealthImage} alt="Health Graphic" style={{ width: '80%', maxWidth: '500px' }} />
         </div>
       </div>
     </div>

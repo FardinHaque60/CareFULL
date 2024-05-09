@@ -80,8 +80,9 @@ function Chatbot() {
                 name="userMsg"
                 value={prompt.userMsg}
                 onChange={handleChange}
-                placeholder="How can I help you today?"
+                placeholder="Ask me about anything health realted"
                 disabled={isLoading}
+                required
               />
               <div className="input-group-append">
                 <button type="submit" className="btn btn-primary" disabled={isLoading}>
