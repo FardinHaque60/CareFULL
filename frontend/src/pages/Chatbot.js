@@ -80,7 +80,7 @@ function Chatbot() {
                 name="userMsg"
                 value={prompt.userMsg}
                 onChange={handleChange}
-                placeholder="Ask me about anything health realted"
+                placeholder="Ask me about anything health related"
                 disabled={isLoading}
                 required
               />
