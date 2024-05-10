@@ -40,8 +40,9 @@ function Appointments() {
     event.preventDefault();
 
     const today = new Date().toISOString().split("T")[0]; 
-
-    if (newAppointment.date <= today) {
+    console.log(today);
+    console.log(newAppointment.date);
+    if (newAppointment.date < today) {
       setErrorMessage('Date must be today or in the future');
       return;
     }
@@ -119,7 +120,6 @@ function Appointments() {
                 name="date"
                 value={newAppointment.date}
                 onChange={handleInputChange}
-                min={new Date().toISOString().substring(0, 10)} 
                 required
               />
             </div>

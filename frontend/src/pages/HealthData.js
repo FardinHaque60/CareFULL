@@ -457,7 +457,6 @@ const [newTime, setNewTime] = useState(false);
                   name="weightDate"
                   value={weightData.weightDate}
                   onChange={handleWeightEntryChange}
-                  max={new Date().toISOString().substring(0, 10)} 
                   required
                 />
               </div>
@@ -489,7 +488,6 @@ const [newTime, setNewTime] = useState(false);
                   name="stepsDate"
                   value={stepsData.stepsDate}
                   onChange={handleStepsEntryChange}
-                  max={new Date().toISOString().substring(0, 10)} 
                   required
                 />
               </div>
@@ -521,7 +519,6 @@ const [newTime, setNewTime] = useState(false);
                   name="heartDate"
                   value={heartData.heartDate}
                   onChange={handleHeartEntryChange}
-                  max={new Date().toISOString().substring(0, 10)} 
                   required
                 />
               </div>
@@ -554,7 +551,6 @@ const [newTime, setNewTime] = useState(false);
                   name="date"
                   value={timeData.date}
                   onChange={handleTimeEntryChange}
-                  max={new Date().toISOString().substring(0, 10)} 
                   required
                 />
               </div>
