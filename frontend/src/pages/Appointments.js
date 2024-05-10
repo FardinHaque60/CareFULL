@@ -41,7 +41,7 @@ function Appointments() {
 
     const today = new Date().toISOString().split("T")[0]; 
 
-    if (newAppointment.date < today) {
+    if (newAppointment.date <= today) {
       setErrorMessage('Date must be today or in the future');
       return;
     }
