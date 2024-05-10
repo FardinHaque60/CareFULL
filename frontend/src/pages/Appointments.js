@@ -174,13 +174,8 @@ function Appointments() {
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-<<<<<<< HEAD
           : null }
           {deleteStatus ?
-=======
-          :
-          deleteStatus ?
->>>>>>> 9dd1bf5413d5d3a3f509bf662f04c4a8705942ef
           <div className="alert alert-success">
             Appointment Deleted Successfully
             <button type="button" className="close-btn" onClick={() => setDeleteStatus(false)}>
