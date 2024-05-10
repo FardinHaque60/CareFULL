@@ -133,6 +133,12 @@ function HealthData() {
   }
   const handleStepsEntry = (event) => {
     event.preventDefault();
+    const today = new Date().toISOString().split("T")[0];
+
+    if (stepsData.stepsDate > today) {
+      alert('Date must be today or in the past');
+      return;
+    }
 
     axios.post("http://localhost:8000/api/add-steps-entry/", stepsData) 
       .then(response => {
@@ -164,6 +170,12 @@ function HealthData() {
   }
   const handleHeartEntry = (event) => {
     event.preventDefault();
+    const today = new Date().toISOString().split("T")[0];
+
+    if (heartData.heartDate > today) {
+      alert('Date must be today or in the past');
+      return;
+    }
 
     axios.post("http://localhost:8000/api/add-heart-entry/", heartData) 
       .then(response => {
@@ -194,6 +206,13 @@ function HealthData() {
   }
   const handleWeightEntry = (event) => {
     event.preventDefault();
+
+    const today = new Date().toISOString().split("T")[0]; // Today's date in YYYY-MM-DD format
+
+    if (weightData.weightDate > today) {
+      alert('Date must be today or in the past');
+      return;
+    }
 
     axios.post("http://localhost:8000/api/add-weight-entry/", weightData) 
       .then(response => {
@@ -233,6 +252,12 @@ const handleTimeEntryChange = (event) => {
 
 const handleTimeEntry = (event) => {
     event.preventDefault();
+    const today = new Date().toISOString().split("T")[0];
+
+    if (timeData.date > today) {
+      alert('Date must be today or in the past');
+      return;
+    }
 
     axios.post("http://localhost:8000/api/add-time-entry/", timeData) 
       .then(response => {
