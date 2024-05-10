@@ -69,6 +69,7 @@ const Appointment = ({ appointment, index, onDelete, onSave }) => {
                   name="date"
                   value={currAppt.date}
                   onChange={handleEditChange}
+                  min={new Date().toISOString().split("T")[0]}
                   required
                 />
               </div>

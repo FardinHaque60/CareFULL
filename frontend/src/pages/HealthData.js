@@ -258,6 +258,10 @@ const handleTimeEntry = (event) => {
       alert('Date must be today or in the past');
       return;
     }
+    if (timeData.type === "") {
+      alert('Please select the type of time');
+      return;
+    }
 
     axios.post("http://localhost:8000/api/add-time-entry/", timeData) 
       .then(response => {
@@ -272,6 +276,10 @@ const handleTimeEntry = (event) => {
         closeModal('time');
       })
       .catch(error => {
+        if (error.response.data === "time exceeded") {
+          alert('Time spent this day exceeding 24 hours');
+          return;
+        }
         console.log("backend error occured");
       })
   }
@@ -556,13 +564,13 @@ const [newTime, setNewTime] = useState(false);
               </div>
               <div className='form-group'> 
                 <div className="dropdown">
-                  <button className="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" onClick={() => setDropdownOpen(!dropdownOpen)} aria-haspopup="true" aria-expanded={dropdownOpen ? 'true' : 'false'}>
+                  <button className="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" onClick={(e) => { e.preventDefault(); setDropdownOpen(!dropdownOpen)}} aria-haspopup="true" aria-expanded={dropdownOpen ? 'true' : 'false'}>
                     {timeData.type ? timeData.type : 'Select Type'}
                   </button>
                   <div className={`dropdown-menu${dropdownOpen ? ' show' : ''}`} aria-labelledby="dropdownMenuButton">
-                    <button className="dropdown-item" onClick={() => handleDropdownMenu('Indoor')} href="#">Indoor</button>
-                    <button className="dropdown-item" onClick={() => handleDropdownMenu('Sleep')}href="#">Sleep</button>
-                    <button className="dropdown-item" onClick={() => handleDropdownMenu('Outdoor')} href="#">Outdoor</button>
+                    <button className="dropdown-item" onClick={(e) => { e.preventDefault() ; handleDropdownMenu('Indoor')}} href="#">Indoor</button>
+                    <button className="dropdown-item" onClick={(e) => { e.preventDefault(); handleDropdownMenu('Sleep')}} href="#">Sleep</button>
+                    <button className="dropdown-item" onClick={(e) => { e.preventDefault(); handleDropdownMenu('Outdoor')}} href="#">Outdoor</button>
                   </div>
                 </div>
               </div>

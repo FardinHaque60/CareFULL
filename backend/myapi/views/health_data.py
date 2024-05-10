@@ -170,6 +170,12 @@ def add_time(request):
     current_user = get_user()
     data = request.data
     date, entry_type, hours = data.get("date"), data.get("type"), data.get("hours")
+    time_data = Time_Data.objects.filter(user=current_user, date=date)
+    time = int(hours)
+    for t in time_data:
+        time += t.hours
+    if (time > 24):
+        return Response("time exceeded", status=status.HTTP_400_BAD_REQUEST)
     try:
         Time_Data.objects.create(user=current_user, date=date, entry_type=entry_type, hours=hours)
     except:
