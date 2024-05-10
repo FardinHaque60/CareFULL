@@ -6,21 +6,8 @@ import Appointment from '../components/Appointment';
 
 function Appointments() {
   const [appointments, setAppointments] = useState([]);
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = () => { //overwrites existing appointments with fetched data from backend
-    axios.get('http://localhost:8000/api/get-appointments/')
-      .then(response => {
-        console.log(response.data);
-        setAppointments(response.data)
-      })
-      .catch(error => {
-        console.log(error.response.data);
-      });
-  }
+  const [saveStatus, setStatus] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const [newAppointment, setNewAppointment] = useState({
     title: '',
@@ -29,27 +16,48 @@ function Appointments() {
     description: '',
   });
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setNewAppointment({...newAppointment, [name]: value});
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = () => {
+    axios.get('http://localhost:8000/api/get-appointments/')
+      .then(response => {
+        console.log(response.data);
+        setAppointments(response.data);
+      })
+      .catch(error => {
+        console.log(error.response.data);
+      });
   };
 
-  const [saveStatus, setStatus] = useState('');
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setNewAppointment({ ...newAppointment, [name]: value });
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    const today = new Date().toISOString().split("T")[0]; 
+
+    if (newAppointment.date < today) {
+      setErrorMessage('Date must be today or in the future');
+      return;
+    }
 
     axios.post('http://localhost:8000/api/save-appointment/', newAppointment)
       .then(response => {
         console.log(response.data);
         setStatus('success');
+        setErrorMessage('');
         fetchData();
       })
       .catch(error => {
         console.log(error.response.data);
         setStatus('fail');
       });
-      
+
     setNewAppointment({
       title: '',
       date: '',
@@ -60,9 +68,9 @@ function Appointments() {
 
   const [deleteStatus, setDeleteStatus] = useState(false);
   const [editStatus, setEditStatus] = useState(false);
-  //methods for handling deleting/ editing
+
   const handleDelete = (appointment) => {
-    console.log(appointment.id)
+    console.log(appointment.id);
     axios.post("http://localhost:8000/api/delete-appointment/", appointment)
       .then(response => {
         console.log(response.data);
@@ -70,21 +78,21 @@ function Appointments() {
         setDeleteStatus(true);
       })
       .catch(error => {
-        console.log("backend error occured");
-      })
-  }
+        console.log("Backend error occurred");
+      });
+  };
 
   const handleSave = (editAppt) => {
     axios.post("http://localhost:8000/api/edit-appointment/", editAppt)
       .then(response => {
-        console.log(response.data)
+        console.log(response.data);
         fetchData();
         setEditStatus(true);
       })
       .catch(error => {
-        console.log("backend error occured")
+        console.log("Backend error occurred");
       });
-  }
+  };
 
   return (
     <LandingPage>
@@ -134,18 +142,24 @@ function Appointments() {
                 onChange={handleInputChange}
               ></textarea>
             </div>
-            {saveStatus === "success" && 
-            <div className="alert alert-success">
-              Appointment Saved Succesfully
-              <button type="button" className="close-btn" onClick={() => setStatus(null)}>
+            {errorMessage && 
+            <div className="alert alert-danger">
+              {errorMessage}
+              <button type="button" className="close-btn" onClick={() => setErrorMessage('')}>
                 <span aria-hidden="true">&times;</span>
               </button>
-            </div>
-            }
+            </div>}
+            {saveStatus === "success" && 
+            <div className="alert alert-success">
+              Appointment Saved Successfully
+              <button type="button" className="close-btn" onClick={() => setStatus('')}>
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>}
             {saveStatus === "fail" && 
             <div className="alert alert-danger">
               Could not save Appointment
-              <button type="button" className="close-btn" onClick={() => setStatus(null)}>
+              <button type="button" className="close-btn" onClick={() => setStatus('')}>
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>}
@@ -154,17 +168,17 @@ function Appointments() {
         </div>
         <div className="appointments-list">
           <h2>Upcoming Appointments</h2>
-          {editStatus ? 
+          {editStatus ?
           <div className="alert alert-success">
-            Appointment Edited Succesfully
+            Appointment Edited Successfully
             <button type="button" className="close-btn" onClick={() => setEditStatus(false)}>
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          : 
+          :
           deleteStatus ?
           <div className="alert alert-success">
-            Appointment Deleted Succesfully
+            Appointment Deleted Successfully
             <button type="button" className="close-btn" onClick={() => setDeleteStatus(false)}>
               <span aria-hidden="true">&times;</span>
             </button>
@@ -174,12 +188,12 @@ function Appointments() {
           }
           <div className="appointment-items">
             {appointments.map((appointment, index) => (
-                <Appointment 
-                  appointment={appointment} 
-                  index={index} 
-                  onDelete={() => handleDelete(appointment)}
-                  onSave={(editAppt) => handleSave(editAppt)}
-                />
+              <Appointment 
+                appointment={appointment}
+                index={index}
+                onDelete={() => handleDelete(appointment)}
+                onSave={(editAppt) => handleSave(editAppt)}
+              />
             ))}
           </div>
         </div>
