@@ -134,4 +134,6 @@
 
   .table-container {
     padding-top: 2%;
+    max-height: 57vh;
+    overflow: auto;
   }
