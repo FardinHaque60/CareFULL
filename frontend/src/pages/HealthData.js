@@ -135,7 +135,7 @@ function HealthData() {
     event.preventDefault();
     const today = new Date().toISOString().split("T")[0];
 
-    if (stepsData.stepsDate >= today) {
+    if (stepsData.stepsDate > today) {
       alert('Date must be today or in the past');
       return;
     }
@@ -172,7 +172,7 @@ function HealthData() {
     event.preventDefault();
     const today = new Date().toISOString().split("T")[0];
 
-    if (heartData.heartDate >= today) {
+    if (heartData.heartDate > today) {
       alert('Date must be today or in the past');
       return;
     }
@@ -209,7 +209,7 @@ function HealthData() {
 
     const today = new Date().toISOString().split("T")[0]; // Today's date in YYYY-MM-DD format
 
-    if (weightData.weightDate >= today) {
+    if (weightData.weightDate > today) {
       alert('Date must be today or in the past');
       return;
     }
@@ -254,7 +254,7 @@ const handleTimeEntry = (event) => {
     event.preventDefault();
     const today = new Date().toISOString().split("T")[0];
 
-    if (timeData.date >= today) {
+    if (timeData.date > today) {
       alert('Date must be today or in the past');
       return;
     }

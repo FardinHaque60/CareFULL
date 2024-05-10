@@ -40,8 +40,6 @@ function Appointments() {
     event.preventDefault();
 
     const today = new Date().toISOString().split("T")[0]; 
-    console.log(today);
-    console.log(newAppointment.date);
     if (newAppointment.date < today) {
       setErrorMessage('Date must be today or in the future');
       return;
@@ -176,8 +174,13 @@ function Appointments() {
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
+<<<<<<< HEAD
           : null }
           {deleteStatus ?
+=======
+          :
+          deleteStatus ?
+>>>>>>> 9dd1bf5413d5d3a3f509bf662f04c4a8705942ef
           <div className="alert alert-success">
             Appointment Deleted Successfully
             <button type="button" className="close-btn" onClick={() => setDeleteStatus(false)}>
