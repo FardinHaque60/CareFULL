@@ -22,7 +22,7 @@ def load_history(request):
     user_history = []
     for msg in messages:
         response_type = "user"
-        if (msg.response): #TODO remove user column in db for less space
+        if (msg.response):
             response_type = "assistant"
         msg_obj = { 
             "role": response_type,
