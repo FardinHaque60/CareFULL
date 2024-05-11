@@ -2,7 +2,7 @@
 Team W09: Fardin, Akhil, Issac, Kailer. Your personal health-care assistant in organizing your information, understanding trends, and being able to ask questions in a secure environment.
 
 ## Prerequistes
-In order to successfully launch the application the following applications/dependencies are required:
+In order to successfully launch the application the following applications/dependencies are required. Reference/ Download the following resources when going through the Set Up:
 * [Python3](https://www.python.org/) needed for virtual environment.
 * [Django](https://docs.djangoproject.com/en/5.0/topics/install/) needed to run backend.
 * [PostgreSQL](https://www.postgresql.org/download/) needed to host database.
@@ -34,3 +34,16 @@ To run our application, run the following commands in a Linux terminal:
 ### Run the Application
 * Open a new terminal and locate to the CareFULL directory and run `cd backend && python manage.py runserver` to run the backend.
 * Open another terminal and locate to the CareFULL directory and run `cd frontend && npm run start` to run the frontend, this should open a new tab in your browser with the application. If not, type [localhost:3000](localhost:3000) in your browser.
+
+## Application Views
+### Login/Create Account
+<img src="views/login.png" alt="login" width="650"/> <img src="views/create_account.png" alt="login" width="650"/>
+
+### Health Data
+<img src="views/health_data.png" alt="login" width="1050"/> <img src="views/add_entry.png" alt="login" width="1050"/>
+
+### Appointments
+<img src="views/appointments.png" alt="login" width="1050"/> <img src="views/edit_appointment.png" alt="login" width="1050"/>
+
+### Chatbot
+<img src="views/chatbot.png" alt="login" width="1050"/>
